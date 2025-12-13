@@ -234,62 +234,69 @@
     footer{margin-top:18px;color:var(--text-muted);font-size:12px;text-align:center}
 
     /* ============================================
-       HUBSPOT FORM STYLING - ROOT5 DAO THEME (MAX VISIBILITY)
+       HUBSPOT FORM STYLING - ROOT5 DAO THEME (MAXIMUM VISIBILITY + NO BRANDING)
        ============================================ */
-    .hbspt-form{font-family:var(--font-main)!important}
+    
+    /* FORCE ALL TEXT TO WHITE - NUCLEAR OPTION */
+    .hbspt-form *{font-family:var(--font-main)!important;color:#ffffff!important}
+    .hs-form *{color:#ffffff!important}
     .hs-form-field{margin-bottom:14px!important}
     
-    /* ALL LABELS - BRIGHT WHITE */
-    .hs-form-field label,.hs-form-field label span{display:block!important;font-size:13px!important;color:#ffffff!important;font-weight:700!important;margin-bottom:6px!important;font-family:var(--font-main)!important}
+    /* LABELS */
+    .hs-form-field label,.hs-form label{display:block!important;font-size:13px!important;color:#ffffff!important;font-weight:700!important;margin-bottom:6px!important}
     
-    /* ALL INPUT FIELDS - BRIGHT WHITE TEXT */
-    .hs-input,.hs-input[type="text"],.hs-input[type="email"],.hs-input[type="checkbox"]{width:100%!important;background:rgba(255,255,255,0.05)!important;border:1px solid rgba(135,142,177,0.3)!important;padding:8px 10px!important;border-radius:8px!important;color:#ffffff!important;font-size:13px!important;font-family:var(--font-main)!important;outline:none!important;transition:all 0.2s ease!important}
+    /* INPUTS */
+    .hs-input,.hs-input[type="text"],.hs-input[type="email"],.hs-fieldtype-text input,.hs-fieldtype-text textarea{width:100%!important;background:rgba(255,255,255,0.08)!important;border:1px solid rgba(135,142,177,0.4)!important;padding:10px 12px!important;border-radius:8px!important;color:#ffffff!important;font-size:14px!important;outline:none!important;transition:all 0.2s ease!important}
     
     /* INPUT FOCUS */
-    .hs-input:focus,.hs-input[type="text"]:focus,.hs-input[type="email"]:focus{border-color:#56f39a!important;box-shadow:0 0 0 3px rgba(86,243,154,0.15)!important;background:rgba(255,255,255,0.08)!important}
+    .hs-input:focus,.hs-input[type="text"]:focus,.hs-input[type="email"]:focus{border-color:#56f39a!important;box-shadow:0 0 0 4px rgba(86,243,154,0.2)!important;background:rgba(255,255,255,0.12)!important}
     
-    /* PLACEHOLDER - BRIGHT */
-    .hs-input::placeholder{color:#d0d4e8!important;opacity:1!important}
+    /* PLACEHOLDER */
+    .hs-input::placeholder{color:#e0e4f8!important;opacity:1!important}
+    .hs-input::-webkit-input-placeholder{color:#e0e4f8!important;opacity:1!important}
+    .hs-input::-moz-placeholder{color:#e0e4f8!important;opacity:1!important}
     
     /* SUBMIT BUTTON */
-    .hs-submit .hs-button,input[type="submit"].hs-button{display:inline-flex!important;align-items:center!important;justify-content:center!important;padding:10px 14px!important;border-radius:999px!important;border:none!important;background:linear-gradient(135deg,#56f39a,#9dffd1)!important;color:#020305!important;font-weight:800!important;cursor:pointer!important;box-shadow:0 8px 30px rgba(86,243,154,0.2)!important;text-transform:uppercase!important;font-size:13px!important;font-family:var(--font-main)!important;transition:all 0.3s ease!important;min-width:180px!important}
-    .hs-submit .hs-button:hover{box-shadow:0 12px 40px rgba(86,243,154,0.3)!important;transform:translateY(-2px)!important}
+    .hs-submit .hs-button,input[type="submit"].hs-button{display:inline-flex!important;align-items:center!important;justify-content:center!important;padding:12px 20px!important;border-radius:999px!important;border:none!important;background:linear-gradient(135deg,#56f39a,#9dffd1)!important;color:#020305!important;font-weight:800!important;cursor:pointer!important;box-shadow:0 8px 30px rgba(86,243,154,0.25)!important;text-transform:uppercase!important;font-size:14px!important;transition:all 0.3s ease!important;min-width:180px!important}
+    .hs-submit .hs-button:hover{box-shadow:0 12px 40px rgba(86,243,154,0.35)!important;transform:translateY(-2px)!important}
     
-    /* ERROR MESSAGES - BRIGHT */
+    /* ERROR MESSAGES */
     .hs-error-msgs{list-style:none!important;padding:0!important;margin:4px 0 0 0!important}
-    .hs-error-msg{color:#ff4d6a!important;font-size:12px!important;font-weight:600!important}
+    .hs-error-msg,.hs-error-msg *{color:#ff6b85!important;font-size:13px!important;font-weight:600!important}
     
-    /* REQUIRED INDICATOR */
-    .hs-form-required{color:#ff4d6a!important}
+    /* REQUIRED */
+    .hs-form-required{color:#ff6b85!important}
     
-    /* FIELD DESCRIPTIONS - BRIGHT WHITE */
-    .hs-field-desc,.hs-field-desc p,.hs-field-desc span{font-size:12px!important;color:#ffffff!important;margin-top:4px!important}
+    /* ALL DESCRIPTIONS AND HELPER TEXT */
+    .hs-field-desc,.hs-field-desc *,.hs-richtext,.hs-richtext *,.legal-consent-container,.legal-consent-container *{color:#ffffff!important;font-size:12px!important;line-height:1.5!important}
     
-    /* SUCCESS MESSAGE */
-    .submitted-message{color:#3bd88f!important;font-size:14px!important;font-weight:600!important;padding:12px!important;background:rgba(59,216,143,0.15)!important;border-radius:8px!important;border:1px solid rgba(59,216,143,0.3)!important}
+    /* CHECKBOXES */
+    .hs-form-booleancheckbox-display{display:flex!important;align-items:flex-start!important;gap:10px!important}
+    .hs-form-booleancheckbox-display input[type="checkbox"]{width:18px!important;height:18px!important;margin:2px 0 0 0!important;cursor:pointer!important;flex-shrink:0!important}
+    .hs-form-booleancheckbox-display label,.hs-form-booleancheckbox-display span,.hs-form-booleancheckbox-display p{margin:0!important;color:#ffffff!important;font-size:12px!important;font-weight:400!important;line-height:1.5!important}
+    
+    /* LINKS IN FORM */
+    .hs-form a,.hs-richtext a,.legal-consent-container a{color:#56f39a!important;text-decoration:underline!important}
     
     /* FIELDSET */
     .hs-form fieldset{max-width:none!important;margin:0!important;padding:0!important;border:none!important}
     
     /* AUTOFILL */
-    .hs-input:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px #11141d inset!important;-webkit-text-fill-color:#ffffff!important}
+    .hs-input:-webkit-autofill,.hs-input:-webkit-autofill:hover,.hs-input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 1000px #1a1d28 inset!important;-webkit-text-fill-color:#ffffff!important}
     
-    /* CHECKBOX STYLING - BRIGHT WHITE TEXT */
-    .hs-form-booleancheckbox-display{display:flex!important;align-items:center!important;gap:8px!important}
-    .hs-form-booleancheckbox-display input[type="checkbox"]{width:16px!important;height:16px!important;margin:0!important;cursor:pointer!important}
-    .hs-form-booleancheckbox-display label,.hs-form-booleancheckbox-display span{margin:0!important;color:#ffffff!important;font-weight:400!important}
+    /* SUCCESS MESSAGE */
+    .submitted-message,.submitted-message *{color:#ffffff!important;font-size:15px!important;font-weight:600!important;padding:14px!important;background:rgba(59,216,143,0.2)!important;border-radius:10px!important;border:2px solid rgba(59,216,143,0.4)!important}
     
-    /* ALL RICH TEXT - BRIGHT WHITE */
-    .hs-richtext,.hs-richtext p,.hs-richtext span,.hs-richtext a{color:#ffffff!important;font-size:12px!important}
-    
-    /* LEGAL CONSENT TEXT - BRIGHT WHITE */
-    .legal-consent-container,.legal-consent-container p,.legal-consent-container span,.legal-consent-container label{color:#ffffff!important;font-size:11px!important}
-    
-    /* HIDE HUBSPOT BRANDING */
-    .hs-form iframe{display:none!important}
-    a[href*="hubspot.com"]{display:none!important}
-    .hs-form-iframe{display:none!important}
+    /* HIDE ALL HUBSPOT BRANDING - AGGRESSIVE */
+    .hs-form iframe,.hs-form-iframe{display:none!important;visibility:hidden!important;height:0!important;width:0!important}
+    a[href*="hubspot"],a[href*="HubSpot"],a[href*="hs-"],a[href*="forms.hs"]{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;width:0!important;position:absolute!important;left:-9999px!important}
     div[class*="hs-richtext"] a[href*="hubspot"]{display:none!important}
+    .hs-form .hs-richtext a[href*="free"]{display:none!important}
+    .hs-form .hs-richtext a[href*="forms"]{display:none!important}
+    [class*="branding"]{display:none!important}
+    
+    /* HIDE RECAPTCHA BRANDING TEXT */
+    .grecaptcha-badge{visibility:hidden!important}
   </style>
 </head>
 
