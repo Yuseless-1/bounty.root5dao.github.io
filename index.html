@@ -1081,20 +1081,6 @@
       // Validation
       msg.textContent = '';
       msg.className = 'note';
-	// Email format check
-if(!email || !email.includes('@')){
-  msg.textContent = 'Please enter a valid email address.';
-  msg.style.color = 'var(--danger)';
-  return;
-}
-
-// Email provider blacklist check
-const emailDomain = email.split('@')[1].toLowerCase();
-if (blockedProviders.includes(emailDomain)) {
-  msg.textContent = `The email provider "${emailDomain}" is not accepted. Please use a different email.`;
-  msg.style.color = 'var(--danger)';
-  return;
-}
 
       if(!dataConsent){
         msg.textContent = 'Please consent to data storage to continue.';
