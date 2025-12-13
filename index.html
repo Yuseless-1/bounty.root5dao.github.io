@@ -815,11 +815,7 @@
             <div>
               <label for="telegram">Telegram username *</label>
               <input id="telegram" name="telegram" class="input" placeholder="@yourhandle" required />
-            </div>
-
-            <div>
-              <label for="sol">Solana address *</label>
-              <input id="sol" name="sol" class="input" placeholder="Solana wallet" required />
+              <p class="note">Your telegram @</p>
             </div>
 
             <div>
@@ -827,68 +823,67 @@
               <input id="evm" name="evm" class="input" placeholder="0x..." required />
             </div>
 
+            <div>
+              <label for="sol">Solana address *</label>
+              <input id="sol" name="sol" class="input" placeholder="Solana wallet" required />
+            </div>
+
             <hr style="border:none;border-top:1px solid rgba(135,142,177,0.06);margin:12px 0;">
 
             <div>
-              <label style="font-weight:700;margin-bottom:8px;display:block;">Competitions *</label>
-              <p class="note" style="margin-bottom:12px;">Please choose if you want to join</p>
+              <label style="font-weight:700;margin-bottom:8px;display:block;">Do you want to Join?</label>
               
-              <label style="display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer;">
-                <input type="checkbox" id="comp_reddit" name="comp_reddit" value="Clipping Campaign (Make Short Vids)" />
-                Clipping Campaign (Make Short Vids)
+              <label style="display:flex;align-items:flex-start;gap:8px;margin-bottom:12px;cursor:pointer;">
+                <input type="checkbox" id="comp_clipping" name="comp_clipping" style="margin-top:3px;" />
+                <span>
+                  <strong>CLIPPING Campaign</strong><br>
+                  <span class="note">Make short videos win $ROOT5 Instructions sent by email</span>
+                </span>
               </label>
               
-              <label style="display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer;">
-                <input type="checkbox" id="comp_xraids" name="comp_xraids" value="X Raids" />
-                X Raids
-              </label>
-              
-              <label style="display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer;">
-                <input type="checkbox" id="comp_bitcointalk" name="comp_bitcointalk" value="Reddit Bump" />
-                Reddit Bump
-              </label>
-              
-              <label style="display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer;">
-                <input type="checkbox" id="comp_tiktok" name="comp_tiktok" value="Bitcointalk Bump" />
-                Bitcointalk Bump
-              </label>
-              
-              <label style="display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer;">
-                <input type="checkbox" id="comp_referral" name="comp_referral" value="TG Referral- register @root5bot" />
-                TG Referral - register @root5bot
+              <label style="display:flex;align-items:flex-start;gap:8px;margin-bottom:12px;cursor:pointer;">
+                <input type="checkbox" id="comp_referrals" name="comp_referrals" style="margin-top:3px;" />
+                <span>
+                  <strong>TG Referrals</strong><br>
+                  <span class="note">Bring Cool people win $ROOT5 Must register with @root5bot</span>
+                </span>
               </label>
             </div>
 
             <hr style="border:none;border-top:1px solid rgba(135,142,177,0.06);margin:12px 0;">
 
             <div>
-              <label style="font-weight:700;margin-bottom:8px;display:block;">Social accounts</label>
-              <p class="note" style="margin-bottom:12px;">Provide your social media handles (at least 3 required for participation)</p>
+              <label style="font-weight:700;margin-bottom:8px;display:block;">Your Socials - Participate And Get Rewards</label>
             </div>
 
             <div>
-              <label for="x">X (Twitter) username</label>
+              <label for="x">Twitter Username</label>
               <input id="x" name="x" class="input" placeholder="@yourx" />
+              <p class="note">Your X acct - Must join https://x.com/i/communities/1986508224624009710</p>
             </div>
 
             <div>
-              <label for="reddit">Reddit username</label>
+              <label for="reddit">reddit_username</label>
               <input id="reddit" name="reddit" class="input" placeholder="u/yourreddit" />
+              <p class="note">Must Join https://www.reddit.com/r/root5dao/</p>
             </div>
 
             <div>
-              <label for="tiktok">TikTok username</label>
+              <label for="tiktok">tiktok_username</label>
               <input id="tiktok" name="tiktok" class="input" placeholder="@yourtiktok" />
+              <p class="note">Must follow https://www.tiktok.com/@root5daocom</p>
             </div>
 
             <div>
-              <label for="instagram">Instagram username</label>
-              <input id="instagram" name="instagram" class="input" placeholder="@yourinsta" />
-            </div>
-
-            <div>
-              <label for="bitcointalk">Bitcointalk username</label>
+              <label for="bitcointalk">bitcointalk_username</label>
               <input id="bitcointalk" name="bitcointalk" class="input" placeholder="Bitcointalk handle" />
+              <p class="note">Bump thread https://bitcointalk.org/index.php?topic=5565567.msg66053550#msg66053550</p>
+            </div>
+
+            <div>
+              <label for="instagram">insta_username</label>
+              <input id="instagram" name="instagram" class="input" placeholder="@yourinsta" />
+              <p class="note">Follow our instagram @root5daocom</p>
             </div>
 
             <hr style="border:none;border-top:1px solid rgba(135,142,177,0.06);margin:12px 0;">
@@ -899,8 +894,8 @@
               </p>
               
               <label style="display:flex;align-items:flex-start;gap:8px;margin-bottom:12px;cursor:pointer;">
-                <input type="checkbox" id="marketing_consent" name="marketing_consent" style="margin-top:3px;" />
-                <span style="font-size:12px;line-height:1.6;">I agree to receive other communications from Root5DAO.</span>
+                <input type="checkbox" id="newsletter_consent" name="newsletter_consent" style="margin-top:3px;" />
+                <span style="font-size:12px;line-height:1.6;">Join Root5DAO Dev Newsletter.</span>
               </label>
               
               <p class="note" style="margin-bottom:12px;line-height:1.6;">
@@ -1065,14 +1060,11 @@
       const instagram = document.getElementById('instagram').value.trim();
       const bitcointalk = document.getElementById('bitcointalk').value.trim();
       
-      // Get checkbox values as booleans
-      const comp_reddit = document.getElementById('comp_reddit').checked;
-      const comp_xraids = document.getElementById('comp_xraids').checked;
-      const comp_bitcointalk = document.getElementById('comp_bitcointalk').checked;
-      const comp_tiktok = document.getElementById('comp_tiktok').checked;
-      const comp_referral = document.getElementById('comp_referral').checked;
+      // Get checkbox values
+      const comp_clipping = document.getElementById('comp_clipping').checked;
+      const comp_referrals = document.getElementById('comp_referrals').checked;
       
-      const marketingConsent = document.getElementById('marketing_consent').checked;
+      const newsletterConsent = document.getElementById('newsletter_consent').checked;
       const dataConsent = document.getElementById('data_consent').checked;
       
       const msg = document.getElementById('formMessage');
@@ -1112,64 +1104,37 @@
         return;
       }
       
-      // Count social accounts
+      // Count social accounts (no longer required to have 3+)
       const socials = [x, reddit, tiktok, instagram, bitcointalk].filter(s => s && s.length > 0).length;
-      if(socials < 3){
-        msg.textContent = 'Please provide at least 3 social accounts to continue.';
-        msg.style.color = 'var(--danger)';
-        return;
-      }
-      
-      // Check at least one competition selected
-      const competitionsSelected = comp_reddit || comp_xraids || comp_bitcointalk || comp_tiktok || comp_referral;
-      if(!competitionsSelected){
-        msg.textContent = 'Please select at least one competition to join.';
-        msg.style.color = 'var(--danger)';
-        return;
-      }
 
       submitBtn.disabled = true;
       submitBtn.textContent = 'Submitting...';
 
       try {
-        // Build fields array
+        // Build fields array with new HubSpot field names
         const fields = [
-          { name: 'email', value: email },
-          { name: 'telegram_username', value: telegram },
-          { name: 'solana_address', value: sol },
-          { name: 'evm_address', value: evm },
+          { name: '0-1/email', value: email },
+          { name: '0-1/firstname', value: telegram },  // Telegram now maps to firstname
+          { name: '0-1/solana_address', value: sol },
+          { name: '0-1/evm_address', value: evm },
         ];
         
         // Add optional social fields only if provided
-        if (x) fields.push({ name: 'x_username', value: x });
-        if (reddit) fields.push({ name: 'reddit_username', value: reddit });
-        if (tiktok) fields.push({ name: 'tiktok_username', value: tiktok });
-        if (instagram) fields.push({ name: 'insta_username', value: instagram });
-        if (bitcointalk) fields.push({ name: 'bitcointalk_username', value: bitcointalk });
+        if (x) fields.push({ name: '0-1/twitterhandle', value: x });
+        if (reddit) fields.push({ name: '0-1/reddit_username', value: reddit });
+        if (tiktok) fields.push({ name: '0-1/tiktok_username', value: tiktok });
+        if (instagram) fields.push({ name: '0-2/twitterhandle', value: instagram });  // Instagram uses 2nd twitterhandle field
+        if (bitcointalk) fields.push({ name: '0-1/bitcointalk_username', value: bitcointalk });
         
-        // Add competition checkboxes - they're a checkbox group, so we send the VALUES of checked boxes
-        const competitionValues = [];
-        if (comp_reddit) competitionValues.push('Clipping Campaign (Make Short Vids)');
-        if (comp_xraids) competitionValues.push('X Raids');
-        if (comp_bitcointalk) competitionValues.push('Reddit Bump');
-        if (comp_tiktok) competitionValues.push('Bitcointalk Bump');
-        if (comp_referral) competitionValues.push('TG Referral- register @root5bot');
+        // Add competition checkboxes as booleans
+        fields.push({ name: '0-1/clipping_campaign', value: comp_clipping });
+        fields.push({ name: '0-1/tg_referrals', value: comp_referrals });
         
-        // HubSpot expects checkbox groups as a semicolon-separated string
-        if (competitionValues.length > 0) {
-          fields.push({ 
-            name: '0-1/competitions', 
-            value: competitionValues.join(';') 
-          });
+        // Add consent checkboxes
+        if (newsletterConsent) {
+          fields.push({ name: 'LEGAL_CONSENT.subscription_type_1751551540', value: true });
         }
-        
-        // Add marketing consent checkbox
-        if (marketingConsent) {
-          fields.push({ 
-            name: 'i_agree_to_receive_other_communications_from_root5dao_', 
-            value: true 
-          });
-        }
+        fields.push({ name: 'LEGAL_CONSENT.processing', value: dataConsent });
         
         // Submit to HubSpot Forms API
         const response = await fetch(
