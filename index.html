@@ -827,11 +827,43 @@
               <input id="evm" name="evm" class="input" placeholder="0x..." required />
             </div>
 
-            <hr style="border:none;border-top:1px solid rgba(135,142,177,0.06);margin:6px 0;">
+            <hr style="border:none;border-top:1px solid rgba(135,142,177,0.06);margin:12px 0;">
 
             <div>
-              <label>Social accounts (provide at least 3)</label>
-              <p class="note">Participation requires at least <span class="strong">3 of the following</span>: X, Reddit, TikTok, Bitcointalk.</p>
+              <label style="font-weight:700;margin-bottom:8px;display:block;">Competitions *</label>
+              <p class="note" style="margin-bottom:12px;">Please choose if you want to join</p>
+              
+              <label style="display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer;">
+                <input type="checkbox" id="comp_reddit" name="comp_reddit" value="Reddit Competition (Make Short Vids)" />
+                Reddit Competition (Make Short Vids)
+              </label>
+              
+              <label style="display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer;">
+                <input type="checkbox" id="comp_xraids" name="comp_xraids" value="X Raids" />
+                X Raids
+              </label>
+              
+              <label style="display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer;">
+                <input type="checkbox" id="comp_bitcointalk" name="comp_bitcointalk" value="Bitcointalk Bump" />
+                Bitcointalk Bump
+              </label>
+              
+              <label style="display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer;">
+                <input type="checkbox" id="comp_tiktok" name="comp_tiktok" value="TikTok Bump" />
+                TikTok Bump
+              </label>
+              
+              <label style="display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer;">
+                <input type="checkbox" id="comp_referral" name="comp_referral" value="1/5 Referral - register @root5dao" />
+                1/5 Referral - register @root5dao
+              </label>
+            </div>
+
+            <hr style="border:none;border-top:1px solid rgba(135,142,177,0.06);margin:12px 0;">
+
+            <div>
+              <label style="font-weight:700;margin-bottom:8px;display:block;">Social accounts</label>
+              <p class="note" style="margin-bottom:12px;">Provide your social media handles (at least 3 required for participation)</p>
             </div>
 
             <div>
@@ -850,19 +882,49 @@
             </div>
 
             <div>
+              <label for="instagram">Instagram username</label>
+              <input id="instagram" name="instagram" class="input" placeholder="@yourinsta" />
+            </div>
+
+            <div>
               <label for="bitcointalk">Bitcointalk username</label>
               <input id="bitcointalk" name="bitcointalk" class="input" placeholder="Bitcointalk handle" />
             </div>
 
+            <hr style="border:none;border-top:1px solid rgba(135,142,177,0.06);margin:12px 0;">
+
             <div>
-              <label style="display:flex;align-items:center;gap:8px">
-                <input id="agree" type="checkbox" required /> I agree to the bounty rules and understand rewards depend on real activity.
+              <p class="note" style="margin-bottom:12px;line-height:1.6;">
+                Root5DAO is committed to protecting and respecting your privacy, and we'll only use your personal information to administer your account and to provide the products and services you requested from us. From time to time, we would like to contact you about our products and services, as well as other content that may be of interest to you.
+              </p>
+              
+              <label style="display:flex;align-items:flex-start;gap:8px;margin-bottom:12px;cursor:pointer;">
+                <input type="checkbox" id="marketing_consent" name="marketing_consent" style="margin-top:3px;" />
+                <span style="font-size:12px;line-height:1.6;">I agree to receive other communications from Root5DAO.</span>
               </label>
+              
+              <p class="note" style="margin-bottom:12px;line-height:1.6;">
+                In order to provide you the content requested, we need to store and process your personal data. If you consent to us storing your personal data for this purpose, please tick the checkbox below.
+              </p>
+              
+              <label style="display:flex;align-items:flex-start;gap:8px;margin-bottom:12px;cursor:pointer;">
+                <input type="checkbox" id="data_consent" name="data_consent" required style="margin-top:3px;" />
+                <span style="font-size:12px;line-height:1.6;">I agree to allow Root5DAO to store and process my personal data. *</span>
+              </label>
+              
+              <p class="note" style="line-height:1.6;">
+                You can unsubscribe from these communications at any time. For more information on how to unsubscribe, our privacy practices, and how we are committed to protecting and respecting your privacy, please review our Privacy Policy.
+              </p>
             </div>
 
-            <div id="formMessage" class="note" aria-live="polite"></div>
+            <hr style="border:none;border-top:1px solid rgba(135,142,177,0.06);margin:12px 0;">
 
-            <div style="display:flex;gap:8px;align-items:center;margin-top:6px">
+            <!-- reCAPTCHA -->
+            <div class="g-recaptcha" data-sitekey="6LfYourSiteKeyHere" style="margin-bottom:12px;"></div>
+
+            <div id="formMessage" class="note" aria-live="polite" style="margin-top:12px;"></div>
+
+            <div style="display:flex;gap:8px;align-items:center;margin-top:12px;">
               <button type="submit" class="btn" id="submitBtn">Join the bounty</button>
             </div>
           </form>
@@ -938,15 +1000,19 @@
     </footer>
   </div>
 
+  <!-- Google reCAPTCHA v2 -->
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  
   <script>
     // ============================================
     // CUSTOM FORM SUBMISSION TO HUBSPOT API
-    // No HubSpot embed needed - we control everything!
+    // With reCAPTCHA, checkboxes, and consent fields
     // ============================================
     
     document.getElementById('bountyForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       
+      // Get all form values
       const email = document.getElementById('email').value.trim();
       const telegram = document.getElementById('telegram').value.trim();
       const sol = document.getElementById('sol').value.trim();
@@ -954,45 +1020,77 @@
       const x = document.getElementById('x').value.trim();
       const reddit = document.getElementById('reddit').value.trim();
       const tiktok = document.getElementById('tiktok').value.trim();
+      const instagram = document.getElementById('instagram').value.trim();
       const bitcointalk = document.getElementById('bitcointalk').value.trim();
-      const agree = document.getElementById('agree').checked;
+      
+      // Get checkbox values
+      const competitions = [];
+      if (document.getElementById('comp_reddit').checked) competitions.push('Reddit Competition');
+      if (document.getElementById('comp_xraids').checked) competitions.push('X Raids');
+      if (document.getElementById('comp_bitcointalk').checked) competitions.push('Bitcointalk Bump');
+      if (document.getElementById('comp_tiktok').checked) competitions.push('TikTok Bump');
+      if (document.getElementById('comp_referral').checked) competitions.push('1/5 Referral');
+      
+      const marketingConsent = document.getElementById('marketing_consent').checked;
+      const dataConsent = document.getElementById('data_consent').checked;
+      
+      // Get reCAPTCHA response
+      const recaptchaResponse = grecaptcha.getResponse();
       
       const msg = document.getElementById('formMessage');
       const submitBtn = document.getElementById('submitBtn');
 
-      // Client-side validation
+      // Validation
       msg.textContent = '';
       msg.className = 'note';
 
-      if(!agree){
-        msg.textContent = 'Please confirm that you agree to the rules.';
+      if(!dataConsent){
+        msg.textContent = 'Please consent to data storage to continue.';
         msg.style.color = 'var(--danger)';
         return;
       }
+      
+      if(!recaptchaResponse){
+        msg.textContent = 'Please complete the reCAPTCHA verification.';
+        msg.style.color = 'var(--danger)';
+        return;
+      }
+      
       if(!email || !email.includes('@')){
         msg.textContent = 'Please enter a valid email address.';
         msg.style.color = 'var(--danger)';
         return;
       }
+      
       if(!telegram || !telegram.startsWith('@')){
         msg.textContent = 'Telegram username must start with @.';
         msg.style.color = 'var(--danger)';
         return;
       }
+      
       if(!sol || sol.length < 32){
-        msg.textContent = 'Please enter a valid Solana address.';
+        msg.textContent = 'Please enter a valid Solana address (minimum 32 characters).';
         msg.style.color = 'var(--danger)';
         return;
       }
+      
       if(!evm || !evm.startsWith('0x') || evm.length < 42){
         msg.textContent = 'Please enter a valid EVM address.';
         msg.style.color = 'var(--danger)';
         return;
       }
       
-      const socials = [x, reddit, tiktok, bitcointalk].filter(s => s && s.length > 0).length;
+      // Count social accounts
+      const socials = [x, reddit, tiktok, instagram, bitcointalk].filter(s => s && s.length > 0).length;
       if(socials < 3){
         msg.textContent = 'Please provide at least 3 social accounts to continue.';
+        msg.style.color = 'var(--danger)';
+        return;
+      }
+      
+      // Check at least one competition selected
+      if(competitions.length === 0){
+        msg.textContent = 'Please select at least one competition to join.';
         msg.style.color = 'var(--danger)';
         return;
       }
@@ -1018,7 +1116,10 @@
                 { name: 'x_username', value: x || '' },
                 { name: 'reddit_username', value: reddit || '' },
                 { name: 'tiktok_username', value: tiktok || '' },
+                { name: 'instagram_username', value: instagram || '' },
                 { name: 'bitcointalk_username', value: bitcointalk || '' },
+                { name: 'competitions', value: competitions.join('; ') },
+                { name: 'marketing_consent', value: marketingConsent ? 'Yes' : 'No' },
               ],
               context: {
                 pageUri: window.location.href,
@@ -1032,10 +1133,12 @@
           msg.textContent = '✓ Registration successful! Welcome to the ROOT5 DAO bounty program.';
           msg.style.color = 'var(--success)';
           document.getElementById('bountyForm').reset();
+          grecaptcha.reset();
           
           console.log('✓ Form submitted successfully to HubSpot');
         } else {
           const error = await response.json();
+          console.error('HubSpot error:', error);
           throw new Error(error.message || 'Submission failed');
         }
         
@@ -1043,6 +1146,7 @@
         console.error('Form submission error:', error);
         msg.textContent = 'Error submitting form. Please try again or contact support in Telegram.';
         msg.style.color = 'var(--danger)';
+        grecaptcha.reset();
       } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Join the bounty';
@@ -1064,20 +1168,26 @@
     });
 
     // Address validation indicators
-    ['sol', 'evm'].forEach(id => {
-      const input = document.getElementById(id);
-      input.addEventListener('input', function(e) {
-        const minLength = id === 'sol' ? 32 : 42;
-        const length = e.target.value.length;
-        
-        if (length > 0 && length < minLength) {
-          e.target.style.borderColor = 'var(--danger)';
-        } else if (length >= minLength) {
-          e.target.style.borderColor = 'var(--success)';
-        } else {
-          e.target.style.borderColor = '';
-        }
-      });
+    document.getElementById('sol').addEventListener('input', function(e) {
+      const length = e.target.value.length;
+      if (length > 0 && length < 32) {
+        e.target.style.borderColor = 'var(--danger)';
+      } else if (length >= 32) {
+        e.target.style.borderColor = 'var(--success)';
+      } else {
+        e.target.style.borderColor = '';
+      }
+    });
+    
+    document.getElementById('evm').addEventListener('input', function(e) {
+      const length = e.target.value.length;
+      if (length > 0 && length < 42) {
+        e.target.style.borderColor = 'var(--danger)';
+      } else if (length >= 42) {
+        e.target.style.borderColor = 'var(--success)';
+      } else {
+        e.target.style.borderColor = '';
+      }
     });
   </script>
 </body>
