@@ -232,6 +232,24 @@
 
     .formula{background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;border:1px dashed rgba(135,142,177,0.06);font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;font-size:13px;color:var(--text-soft)}
     footer{margin-top:18px;color:var(--text-muted);font-size:12px;text-align:center}
+
+    /* ============================================
+       HUBSPOT FORM STYLING - ROOT5 DAO THEME
+       ============================================ */
+    .hbspt-form{font-family:var(--font-main)!important}
+    .hs-form-field{margin-bottom:14px!important}
+    .hs-form-field label{display:block!important;font-size:13px!important;color:var(--text-soft)!important;font-weight:600!important;margin-bottom:6px!important;font-family:var(--font-main)!important}
+    .hs-input,.hs-input[type="text"],.hs-input[type="email"]{width:100%!important;background:rgba(255,255,255,0.02)!important;border:1px solid rgba(135,142,177,0.08)!important;padding:8px 10px!important;border-radius:8px!important;color:var(--text-main)!important;font-size:13px!important;font-family:var(--font-main)!important;outline:none!important;transition:all 0.2s ease!important}
+    .hs-input:focus,.hs-input[type="text"]:focus,.hs-input[type="email"]:focus{border-color:var(--accent-primary)!important;box-shadow:0 0 0 3px rgba(86,243,154,0.06)!important}
+    .hs-input::placeholder{color:var(--text-muted)!important;opacity:0.6!important}
+    .hs-submit .hs-button,input[type="submit"].hs-button{display:inline-flex!important;align-items:center!important;justify-content:center!important;padding:10px 14px!important;border-radius:999px!important;border:none!important;background:linear-gradient(135deg,var(--accent-primary),#9dffd1)!important;color:#020305!important;font-weight:800!important;cursor:pointer!important;box-shadow:0 8px 30px rgba(86,243,154,0.12)!important;text-transform:uppercase!important;font-size:13px!important;font-family:var(--font-main)!important;transition:all 0.3s ease!important;min-width:180px!important}
+    .hs-submit .hs-button:hover{box-shadow:0 12px 40px rgba(86,243,154,0.2)!important;transform:translateY(-2px)!important}
+    .hs-error-msgs{list-style:none!important;padding:0!important;margin:4px 0 0 0!important}
+    .hs-error-msg{color:var(--danger)!important;font-size:12px!important}
+    .hs-form-required{color:var(--danger)!important}
+    .submitted-message{color:var(--success)!important;font-size:14px!important;font-weight:600!important;padding:12px!important;background:rgba(59,216,143,0.1)!important;border-radius:8px!important;border:1px solid rgba(59,216,143,0.2)!important}
+    .hs-form fieldset{max-width:none!important;margin:0!important;padding:0!important;border:none!important}
+    .hs-input:-webkit-autofill{-webkit-box-shadow:0 0 0 1000px var(--bg-panel-alt) inset!important;-webkit-text-fill-color:var(--text-main)!important}
   </style>
 </head>
 
@@ -590,66 +608,8 @@
 
           <p class="note">Register your details so we can track your activity across platforms and distribute rewards accurately.</p>
 
-          <form class="form" id="bountyForm" method="POST" action="/bounty/register" onsubmit="return validateForm();">
-            <div>
-              <label for="email">Email (required)</label>
-              <input id="email" name="email" type="email" class="input" placeholder="you@example.com" required />
-            </div>
-
-            <div>
-              <label for="telegram">Telegram username (required)</label>
-              <input id="telegram" name="telegram" class="input" placeholder="@yourhandle" required />
-            </div>
-
-            <div>
-              <label for="sol">Solana address (required)</label>
-              <input id="sol" name="sol" class="input" placeholder="Solana wallet" required />
-            </div>
-
-            <div>
-              <label for="evm">EVM address (required)</label>
-              <input id="evm" name="evm" class="input" placeholder="0x..." required />
-            </div>
-
-            <hr style="border:none;border-top:1px solid rgba(135,142,177,0.06);margin:6px 0;">
-
-            <div>
-              <label>Social accounts (provide at least 3)</label>
-              <p class="note">Participation requires at least <span class="strong">3 of the following</span>: X, Reddit, TikTok, Bitcointalk.</p>
-            </div>
-
-            <div>
-              <label for="x">X (Twitter) username</label>
-              <input id="x" name="x" class="input" placeholder="@yourx" />
-            </div>
-
-            <div>
-              <label for="reddit">Reddit username</label>
-              <input id="reddit" name="reddit" class="input" placeholder="u/yourreddit" />
-            </div>
-
-            <div>
-              <label for="tiktok">TikTok username</label>
-              <input id="tiktok" name="tiktok" class="input" placeholder="@yourtiktok" />
-            </div>
-
-            <div>
-              <label for="bitcointalk">Bitcointalk username</label>
-              <input id="bitcointalk" name="bitcointalk" class="input" placeholder="Bitcointalk handle" />
-            </div>
-
-            <div>
-              <label style="display:flex;align-items:center;gap:8px">
-                <input id="agree" type="checkbox" /> I agree to the bounty rules and understand rewards depend on real activity.
-              </label>
-            </div>
-
-            <div id="formMessage" class="note" aria-live="polite"></div>
-
-            <div style="display:flex;gap:8px;align-items:center;margin-top:6px">
-              <button type="submit" class="btn" id="submitBtn">Join the bounty</button>
-            </div>
-          </form>
+          <!-- HubSpot Form Container -->
+          <div id="hubspotFormContainer"></div>
         </section>
 
         <!-- Quick reference -->
@@ -722,59 +682,67 @@
     </footer>
   </div>
 
+  <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
   <script>
-    // Basic client-side validation and messaging
-    function validateForm(){
-      const email = document.getElementById('email').value.trim();
-      const telegram = document.getElementById('telegram').value.trim();
-      const sol = document.getElementById('sol').value.trim();
-      const evm = document.getElementById('evm').value.trim();
-      const x = document.getElementById('x').value.trim();
-      const reddit = document.getElementById('reddit').value.trim();
-      const tiktok = document.getElementById('tiktok').value.trim();
-      const bitcointalk = document.getElementById('bitcointalk').value.trim();
-      const agree = document.getElementById('agree').checked;
-      const msg = document.getElementById('formMessage');
-      const submitBtn = document.getElementById('submitBtn');
-
-      msg.textContent = '';
-      msg.className = 'note';
-
-      if(!agree){
-        msg.textContent = 'Please confirm that you agree to the rules.';
-        msg.style.color = 'var(--danger)';
-        return false;
-      }
-      if(!email || !email.includes('@')){
-        msg.textContent = 'Please enter a valid email address.';
-        msg.style.color = 'var(--danger)';
-        return false;
-      }
-      if(!telegram || !telegram.startsWith('@')){
-        msg.textContent = 'Telegram username must start with @.';
-        msg.style.color = 'var(--danger)';
-        return false;
-      }
-      if(!sol){
-        msg.textContent = 'Solana address is required.';
-        msg.style.color = 'var(--danger)';
-        return false;
-      }
-      if(!evm || !evm.startsWith('0x') || evm.length < 20){
-        msg.textContent = 'Please enter a valid EVM address.';
-        msg.style.color = 'var(--danger)';
-        return false;
-      }
-      const socials = [x, reddit, tiktok, bitcointalk].filter(s => s && s.length>0).length;
-      if(socials < 3){
-        msg.textContent = 'Please provide at least 3 social accounts to continue.';
-        msg.style.color = 'var(--danger)';
-        return false;
-      }
-
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Submitting...';
-      return true;
+    // ============================================
+    // HUBSPOT FORM INTEGRATION - ROOT5 DAO
+    // ============================================
+    if (window.hbspt) {
+      window.hbspt.forms.create({
+        region: "na2",
+        portalId: "244595044",
+        formId: "7d0a4dbf-824d-45ca-9fc6-e8ec616515af",
+        target: "#hubspotFormContainer",
+        
+        onFormReady: function($form) {
+          console.log('ROOT5 DAO Bounty Form loaded successfully');
+          
+          // Auto-add @ to telegram username
+          const telegramInput = $form.find('input[name="telegram_username"]')[0];
+          if (telegramInput) {
+            telegramInput.addEventListener('input', function(e) {
+              if (e.target.value && !e.target.value.startsWith('@')) {
+                e.target.value = '@' + e.target.value;
+              }
+            });
+          }
+          
+          // Auto-add 0x to EVM address
+          const evmInput = $form.find('input[name="evm_address"]')[0];
+          if (evmInput) {
+            evmInput.addEventListener('input', function(e) {
+              if (e.target.value && !e.target.value.startsWith('0x')) {
+                e.target.value = '0x' + e.target.value;
+              }
+            });
+          }
+          
+          // Visual validation for addresses
+          ['solana_address', 'evm_address'].forEach(fieldName => {
+            const input = $form.find(`input[name="${fieldName}"]`)[0];
+            if (input) {
+              input.addEventListener('input', function(e) {
+                const minLength = fieldName === 'solana_address' ? 32 : 42;
+                const length = e.target.value.length;
+                
+                if (length > 0 && length < minLength) {
+                  e.target.style.borderColor = '#ff4d6a';
+                } else if (length >= minLength) {
+                  e.target.style.borderColor = '#3bd88f';
+                } else {
+                  e.target.style.borderColor = '';
+                }
+              });
+            }
+          });
+        },
+        
+        onFormSubmitted: function() {
+          console.log('Bounty registration successful!');
+        }
+      });
+    } else {
+      console.error('HubSpot forms script not loaded');
     }
   </script>
 </body>
