@@ -234,69 +234,220 @@
     footer{margin-top:18px;color:var(--text-muted);font-size:12px;text-align:center}
 
     /* ============================================
-       HUBSPOT FORM STYLING - ROOT5 DAO THEME (MAXIMUM VISIBILITY + NO BRANDING)
+       HUBSPOT FORM STYLING - ROOT5 DAO THEME
+       Ultra-specific selectors to override HubSpot defaults
        ============================================ */
     
-    /* FORCE ALL TEXT TO WHITE - NUCLEAR OPTION */
-    .hbspt-form *{font-family:var(--font-main)!important;color:#ffffff!important}
-    .hs-form *{color:#ffffff!important}
-    .hs-form-field{margin-bottom:14px!important}
+    /* CONTAINER */
+    .hbspt-form{font-family:var(--font-main)!important}
     
-    /* LABELS */
-    .hs-form-field label,.hs-form label{display:block!important;font-size:13px!important;color:#ffffff!important;font-weight:700!important;margin-bottom:6px!important}
+    /* FORM STRUCTURE */
+    .hs-form{font-family:var(--font-main)!important}
+    .hs-form-field{margin-bottom:16px!important}
     
-    /* INPUTS */
-    .hs-input,.hs-input[type="text"],.hs-input[type="email"],.hs-fieldtype-text input,.hs-fieldtype-text textarea{width:100%!important;background:rgba(255,255,255,0.08)!important;border:1px solid rgba(135,142,177,0.4)!important;padding:10px 12px!important;border-radius:8px!important;color:#ffffff!important;font-size:14px!important;outline:none!important;transition:all 0.2s ease!important}
+    /* LABELS - MAXIMUM SPECIFICITY */
+    .hs-form .hs-form-field > label,
+    .hs-form .hs-form-field label span,
+    .hs-form .hs-form-field > label.hs-form-label{
+      display:block!important;
+      font-size:14px!important;
+      color:#ffffff!important;
+      font-weight:700!important;
+      margin-bottom:8px!important;
+      font-family:var(--font-main)!important;
+    }
     
-    /* INPUT FOCUS */
-    .hs-input:focus,.hs-input[type="text"]:focus,.hs-input[type="email"]:focus{border-color:#56f39a!important;box-shadow:0 0 0 4px rgba(86,243,154,0.2)!important;background:rgba(255,255,255,0.12)!important}
+    /* INPUT FIELDS - ULTRA SPECIFIC */
+    .hs-form input.hs-input,
+    .hs-form input[type="text"],
+    .hs-form input[type="email"],
+    .hs-form textarea.hs-input,
+    .hs-fieldtype-text input,
+    .hs-fieldtype-text textarea{
+      width:100%!important;
+      background:rgba(255,255,255,0.1)!important;
+      border:1px solid rgba(200,200,220,0.3)!important;
+      padding:12px 14px!important;
+      border-radius:8px!important;
+      color:#ffffff!important;
+      font-size:14px!important;
+      font-family:var(--font-main)!important;
+      outline:none!important;
+      transition:all 0.2s ease!important;
+    }
     
-    /* PLACEHOLDER */
-    .hs-input::placeholder{color:#e0e4f8!important;opacity:1!important}
-    .hs-input::-webkit-input-placeholder{color:#e0e4f8!important;opacity:1!important}
-    .hs-input::-moz-placeholder{color:#e0e4f8!important;opacity:1!important}
+    /* INPUT FOCUS STATE */
+    .hs-form input.hs-input:focus,
+    .hs-form input[type="text"]:focus,
+    .hs-form input[type="email"]:focus{
+      border-color:#56f39a!important;
+      box-shadow:0 0 0 4px rgba(86,243,154,0.25)!important;
+      background:rgba(255,255,255,0.15)!important;
+    }
+    
+    /* PLACEHOLDER TEXT */
+    .hs-form input::placeholder,
+    .hs-form textarea::placeholder{color:#e8e8f0!important;opacity:1!important}
+    .hs-form input::-webkit-input-placeholder{color:#e8e8f0!important;opacity:1!important}
+    .hs-form input::-moz-placeholder{color:#e8e8f0!important;opacity:1!important}
     
     /* SUBMIT BUTTON */
-    .hs-submit .hs-button,input[type="submit"].hs-button{display:inline-flex!important;align-items:center!important;justify-content:center!important;padding:12px 20px!important;border-radius:999px!important;border:none!important;background:linear-gradient(135deg,#56f39a,#9dffd1)!important;color:#020305!important;font-weight:800!important;cursor:pointer!important;box-shadow:0 8px 30px rgba(86,243,154,0.25)!important;text-transform:uppercase!important;font-size:14px!important;transition:all 0.3s ease!important;min-width:180px!important}
-    .hs-submit .hs-button:hover{box-shadow:0 12px 40px rgba(86,243,154,0.35)!important;transform:translateY(-2px)!important}
+    .hs-form .hs-submit .hs-button,
+    .hs-form input[type="submit"],
+    .hs-form .hs-button.primary{
+      display:inline-flex!important;
+      align-items:center!important;
+      justify-content:center!important;
+      padding:14px 24px!important;
+      border-radius:999px!important;
+      border:none!important;
+      background:linear-gradient(135deg,#56f39a,#9dffd1)!important;
+      color:#020305!important;
+      font-weight:800!important;
+      cursor:pointer!important;
+      box-shadow:0 10px 35px rgba(86,243,154,0.3)!important;
+      text-transform:uppercase!important;
+      font-size:14px!important;
+      font-family:var(--font-main)!important;
+      transition:all 0.3s ease!important;
+      min-width:200px!important;
+    }
+    
+    .hs-form .hs-submit .hs-button:hover,
+    .hs-form input[type="submit"]:hover{
+      box-shadow:0 14px 45px rgba(86,243,154,0.4)!important;
+      transform:translateY(-2px)!important;
+    }
     
     /* ERROR MESSAGES */
-    .hs-error-msgs{list-style:none!important;padding:0!important;margin:4px 0 0 0!important}
-    .hs-error-msg,.hs-error-msg *{color:#ff6b85!important;font-size:13px!important;font-weight:600!important}
+    .hs-form .hs-error-msgs{list-style:none!important;padding:0!important;margin:6px 0 0 0!important}
+    .hs-form .hs-error-msg{color:#ff6b85!important;font-size:13px!important;font-weight:600!important}
     
-    /* REQUIRED */
-    .hs-form-required{color:#ff6b85!important}
+    /* REQUIRED ASTERISK */
+    .hs-form .hs-form-required{color:#ff6b85!important}
     
-    /* ALL DESCRIPTIONS AND HELPER TEXT */
-    .hs-field-desc,.hs-field-desc *,.hs-richtext,.hs-richtext *,.legal-consent-container,.legal-consent-container *{color:#ffffff!important;font-size:12px!important;line-height:1.5!important}
+    /* FIELD DESCRIPTIONS */
+    .hs-form .hs-field-desc,
+    .hs-form .hs-field-desc p,
+    .hs-form .hs-field-desc span{
+      color:#ffffff!important;
+      font-size:12px!important;
+      margin-top:6px!important;
+      line-height:1.6!important;
+    }
     
-    /* CHECKBOXES */
-    .hs-form-booleancheckbox-display{display:flex!important;align-items:flex-start!important;gap:10px!important}
-    .hs-form-booleancheckbox-display input[type="checkbox"]{width:18px!important;height:18px!important;margin:2px 0 0 0!important;cursor:pointer!important;flex-shrink:0!important}
-    .hs-form-booleancheckbox-display label,.hs-form-booleancheckbox-display span,.hs-form-booleancheckbox-display p{margin:0!important;color:#ffffff!important;font-size:12px!important;font-weight:400!important;line-height:1.5!important}
+    /* RICH TEXT AREAS */
+    .hs-form .hs-richtext,
+    .hs-form .hs-richtext p,
+    .hs-form .hs-richtext span{
+      color:#ffffff!important;
+      font-size:12px!important;
+      line-height:1.6!important;
+    }
     
-    /* LINKS IN FORM */
-    .hs-form a,.hs-richtext a,.legal-consent-container a{color:#56f39a!important;text-decoration:underline!important}
+    /* LEGAL CONSENT CONTAINER - VERY SPECIFIC */
+    .hs-form .legal-consent-container,
+    .hs-form .legal-consent-container p,
+    .hs-form .legal-consent-container span,
+    .hs-form .legal-consent-container label,
+    .hs-form .legal-consent-container div{
+      color:#ffffff!important;
+      font-size:11px!important;
+      line-height:1.6!important;
+    }
+    
+    /* CHECKBOX FIELDS */
+    .hs-form .hs-form-booleancheckbox-display{
+      display:flex!important;
+      align-items:flex-start!important;
+      gap:12px!important;
+      margin:8px 0!important;
+    }
+    
+    .hs-form .hs-form-booleancheckbox-display input[type="checkbox"]{
+      width:20px!important;
+      height:20px!important;
+      margin:3px 0 0 0!important;
+      cursor:pointer!important;
+      flex-shrink:0!important;
+    }
+    
+    .hs-form .hs-form-booleancheckbox-display label,
+    .hs-form .hs-form-booleancheckbox-display span{
+      margin:0!important;
+      color:#ffffff!important;
+      font-size:12px!important;
+      font-weight:400!important;
+      line-height:1.6!important;
+    }
+    
+    /* LINKS */
+    .hs-form a{color:#56f39a!important;text-decoration:underline!important}
+    .hs-form a:hover{color:#7affc9!important}
     
     /* FIELDSET */
-    .hs-form fieldset{max-width:none!important;margin:0!important;padding:0!important;border:none!important}
+    .hs-form fieldset,
+    .hs-form fieldset.form-columns-1,
+    .hs-form fieldset.form-columns-2{
+      max-width:none!important;
+      margin:0!important;
+      padding:0!important;
+      border:none!important;
+    }
     
-    /* AUTOFILL */
-    .hs-input:-webkit-autofill,.hs-input:-webkit-autofill:hover,.hs-input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0 1000px #1a1d28 inset!important;-webkit-text-fill-color:#ffffff!important}
+    /* AUTOFILL OVERRIDE */
+    .hs-form input:-webkit-autofill,
+    .hs-form input:-webkit-autofill:hover,
+    .hs-form input:-webkit-autofill:focus{
+      -webkit-box-shadow:0 0 0 1000px #1a1d28 inset!important;
+      -webkit-text-fill-color:#ffffff!important;
+      transition:background-color 5000s ease-in-out 0s!important;
+    }
     
     /* SUCCESS MESSAGE */
-    .submitted-message,.submitted-message *{color:#ffffff!important;font-size:15px!important;font-weight:600!important;padding:14px!important;background:rgba(59,216,143,0.2)!important;border-radius:10px!important;border:2px solid rgba(59,216,143,0.4)!important}
+    .hs-form .submitted-message{
+      color:#ffffff!important;
+      font-size:16px!important;
+      font-weight:600!important;
+      padding:16px!important;
+      background:rgba(59,216,143,0.25)!important;
+      border-radius:10px!important;
+      border:2px solid rgba(59,216,143,0.5)!important;
+      text-align:center!important;
+    }
     
-    /* HIDE ALL HUBSPOT BRANDING - AGGRESSIVE */
-    .hs-form iframe,.hs-form-iframe{display:none!important;visibility:hidden!important;height:0!important;width:0!important}
-    a[href*="hubspot"],a[href*="HubSpot"],a[href*="hs-"],a[href*="forms.hs"]{display:none!important;visibility:hidden!important;opacity:0!important;height:0!important;width:0!important;position:absolute!important;left:-9999px!important}
-    div[class*="hs-richtext"] a[href*="hubspot"]{display:none!important}
-    .hs-form .hs-richtext a[href*="free"]{display:none!important}
-    .hs-form .hs-richtext a[href*="forms"]{display:none!important}
-    [class*="branding"]{display:none!important}
+    /* HIDE HUBSPOT BRANDING - NUCLEAR APPROACH */
+    .hs-form iframe,
+    .hs-form .hs-form-iframe,
+    div[id*="hs-eu-cookie"],
+    div[id*="hs-eu-confirmation"]{
+      display:none!important;
+      visibility:hidden!important;
+      opacity:0!important;
+      height:0!important;
+      width:0!important;
+      position:absolute!important;
+      left:-9999px!important;
+    }
     
-    /* HIDE RECAPTCHA BRANDING TEXT */
-    .grecaptcha-badge{visibility:hidden!important}
+    /* HIDE HUBSPOT LINKS */
+    .hs-form a[href*="hubspot"],
+    .hs-form a[href*="HubSpot"],
+    .hs-form a[href*="hs-"],
+    .hs-form a[href*="forms.hs"],
+    .hs-richtext a[href*="hubspot"],
+    .hs-richtext a[href*="free-forms"]{
+      display:none!important;
+      visibility:hidden!important;
+      opacity:0!important;
+      height:0!important;
+      width:0!important;
+      position:absolute!important;
+      left:-9999px!important;
+    }
+    
+    /* HIDE RECAPTCHA BADGE */
+    .grecaptcha-badge{opacity:0!important;visibility:hidden!important}
   </style>
 </head>
 
