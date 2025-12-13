@@ -895,6 +895,70 @@
   <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
   <script>
     // ============================================
+    // AGGRESSIVE FORM STYLING - MUTATION OBSERVER
+    // This watches for HubSpot to inject the form, then styles it
+    // ============================================
+    
+    function forceFormStyling() {
+      const container = document.getElementById('hubspotFormContainer');
+      if (!container) return;
+      
+      console.log('Forcing form styling...');
+      
+      // Get all elements in the form
+      const labels = container.querySelectorAll('label');
+      const inputs = container.querySelectorAll('input, textarea');
+      const textElements = container.querySelectorAll('p, span, div, .hs-richtext, .legal-consent-container');
+      const links = container.querySelectorAll('a[href*="hubspot"], a[href*="HubSpot"], a[href*="free"]');
+      
+      // Force labels to be white
+      labels.forEach(label => {
+        label.style.setProperty('color', '#ffffff', 'important');
+        label.style.fontWeight = '700';
+        label.style.fontSize = '14px';
+        label.style.marginBottom = '8px';
+      });
+      
+      // Force inputs to be white with visible background
+      inputs.forEach(input => {
+        input.style.setProperty('color', '#ffffff', 'important');
+        input.style.setProperty('background-color', 'rgba(255,255,255,0.1)', 'important');
+        input.style.setProperty('border', '1px solid rgba(200,200,220,0.5)', 'important');
+        input.style.padding = '12px';
+        input.style.borderRadius = '8px';
+        input.style.fontSize = '14px';
+      });
+      
+      // Force all text to be white
+      textElements.forEach(el => {
+        el.style.setProperty('color', '#ffffff', 'important');
+      });
+      
+      // Hide branding
+      links.forEach(link => {
+        link.style.display = 'none';
+        link.remove();
+      });
+      
+      console.log('✓ Styled:', labels.length, 'labels,', inputs.length, 'inputs,', textElements.length, 'text elements');
+    }
+    
+    // Watch for HubSpot form injection
+    const observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.addedNodes.length) {
+          forceFormStyling();
+        }
+      });
+    });
+    
+    // Start observing
+    const targetNode = document.getElementById('hubspotFormContainer');
+    if (targetNode) {
+      observer.observe(targetNode, { childList: true, subtree: true });
+    }
+    
+    // ============================================
     // HUBSPOT FORM INTEGRATION - ROOT5 DAO
     // ============================================
     if (window.hbspt) {
@@ -905,63 +969,15 @@
         target: "#hubspotFormContainer",
         
         onFormReady: function($form) {
-          console.log('ROOT5 DAO Bounty Form loaded successfully');
+          console.log('ROOT5 DAO Bounty Form loaded');
           
-          // FORCE ALL TEXT TO BE WHITE - JAVASCRIPT OVERRIDE
-          setTimeout(function() {
-            // Force all labels to be white
-            $form.find('label').css({
-              'color': '#ffffff !important',
-              'font-weight': '700',
-              'font-size': '14px',
-              'margin-bottom': '8px'
-            });
-            
-            // Force all labels via setAttribute
-            $form.find('label').each(function() {
-              this.style.setProperty('color', '#ffffff', 'important');
-              this.style.fontWeight = '700';
-            });
-            
-            // Force all input fields
-            $form.find('input, textarea').css({
-              'color': '#ffffff !important',
-              'background': 'rgba(255,255,255,0.1) !important',
-              'border': '1px solid rgba(200,200,220,0.4) !important',
-              'padding': '12px',
-              'border-radius': '8px',
-              'font-size': '14px'
-            });
-            
-            // Force inputs via setAttribute
-            $form.find('input, textarea').each(function() {
-              this.style.setProperty('color', '#ffffff', 'important');
-              this.style.setProperty('background', 'rgba(255,255,255,0.1)', 'important');
-              this.style.setProperty('border', '1px solid rgba(200,200,220,0.4)', 'important');
-            });
-            
-            // Force all text elements (p, span, div)
-            $form.find('p, span, div, .hs-richtext, .legal-consent-container').css({
-              'color': '#ffffff !important'
-            });
-            
-            // Force via setAttribute for all text
-            $form.find('p, span, div, .hs-richtext, .legal-consent-container').each(function() {
-              this.style.setProperty('color', '#ffffff', 'important');
-            });
-            
-            // Hide HubSpot branding links
-            $form.find('a[href*="hubspot"], a[href*="free"], a[href*="forms"]').css({
-              'display': 'none',
-              'visibility': 'hidden',
-              'opacity': '0'
-            });
-            
-            // Remove HubSpot branding completely
-            $form.find('a[href*="hubspot"], a[href*="HubSpot"]').remove();
-            
-            console.log('Form styling applied via JavaScript');
-          }, 100);
+          // Apply styling immediately
+          forceFormStyling();
+          
+          // Apply again after a delay to catch any late-loading elements
+          setTimeout(forceFormStyling, 200);
+          setTimeout(forceFormStyling, 500);
+          setTimeout(forceFormStyling, 1000);
           
           // Auto-add @ to telegram username
           const telegramInput = $form.find('input[name="telegram_username"]')[0];
