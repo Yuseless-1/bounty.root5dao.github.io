@@ -919,6 +919,16 @@
 
             <hr style="border:none;border-top:1px solid rgba(135,142,177,0.06);margin:12px 0;">
 
+            <!-- Simple Math Challenge (Spam Protection) -->
+            <div style="margin-bottom:16px;">
+              <label for="mathChallenge" style="font-weight:700;margin-bottom:8px;display:block;">Security Check *</label>
+              <p class="note" style="margin-bottom:8px;">Please solve this simple math problem to prove you're human:</p>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <span id="mathQuestion" style="font-size:16px;font-weight:700;color:var(--accent-primary);"></span>
+                <input type="number" id="mathChallenge" class="input" placeholder="Answer" required style="max-width:150px;" />
+              </div>
+            </div>
+
             <!-- Honeypot field (hidden from users, catches bots) -->
             <div style="position:absolute;left:-9999px;opacity:0;" aria-hidden="true">
               <label for="website">Website</label>
@@ -1005,18 +1015,42 @@
 
   <script>
     // ============================================
+    // MATH CHALLENGE SETUP
+    // ============================================
+    let mathAnswer;
+    
+    function generateMathChallenge() {
+      const num1 = Math.floor(Math.random() * 10) + 1;
+      const num2 = Math.floor(Math.random() * 10) + 1;
+      mathAnswer = num1 + num2;
+      document.getElementById('mathQuestion').textContent = `What is ${num1} + ${num2}?`;
+    }
+    
+    // Generate challenge on page load
+    generateMathChallenge();
+    
+    // ============================================
     // CUSTOM FORM SUBMISSION TO HUBSPOT API
-    // With honeypot spam protection, checkboxes, and consent fields
     // ============================================
     
     document.getElementById('bountyForm').addEventListener('submit', async function(e) {
       e.preventDefault();
       
-      // Honeypot spam check (bots will fill this field)
+      // Honeypot spam check
       const honeypot = document.getElementById('website').value;
       if (honeypot) {
-        // This is a bot - silently reject
         console.log('Spam detected via honeypot');
+        return;
+      }
+      
+      // Math challenge check
+      const userMathAnswer = parseInt(document.getElementById('mathChallenge').value);
+      if (userMathAnswer !== mathAnswer) {
+        const msg = document.getElementById('formMessage');
+        msg.textContent = 'Incorrect answer to the math question. Please try again.';
+        msg.style.color = 'var(--danger)';
+        generateMathChallenge(); // New question
+        document.getElementById('mathChallenge').value = '';
         return;
       }
       
@@ -1031,13 +1065,12 @@
       const instagram = document.getElementById('instagram').value.trim();
       const bitcointalk = document.getElementById('bitcointalk').value.trim();
       
-      // Get checkbox values
-      const competitions = [];
-      if (document.getElementById('comp_reddit').checked) competitions.push('Reddit Competition');
-      if (document.getElementById('comp_xraids').checked) competitions.push('X Raids');
-      if (document.getElementById('comp_bitcointalk').checked) competitions.push('Bitcointalk Bump');
-      if (document.getElementById('comp_tiktok').checked) competitions.push('TikTok Bump');
-      if (document.getElementById('comp_referral').checked) competitions.push('1/5 Referral');
+      // Get checkbox values as booleans
+      const comp_reddit = document.getElementById('comp_reddit').checked;
+      const comp_xraids = document.getElementById('comp_xraids').checked;
+      const comp_bitcointalk = document.getElementById('comp_bitcointalk').checked;
+      const comp_tiktok = document.getElementById('comp_tiktok').checked;
+      const comp_referral = document.getElementById('comp_referral').checked;
       
       const marketingConsent = document.getElementById('marketing_consent').checked;
       const dataConsent = document.getElementById('data_consent').checked;
@@ -1088,7 +1121,8 @@
       }
       
       // Check at least one competition selected
-      if(competitions.length === 0){
+      const competitionsSelected = comp_reddit || comp_xraids || comp_bitcointalk || comp_tiktok || comp_referral;
+      if(!competitionsSelected){
         msg.textContent = 'Please select at least one competition to join.';
         msg.style.color = 'var(--danger)';
         return;
@@ -1098,6 +1132,31 @@
       submitBtn.textContent = 'Submitting...';
 
       try {
+        // Build fields array - submit each competition as separate boolean
+        const fields = [
+          { name: 'email', value: email },
+          { name: 'telegram_username', value: telegram },
+          { name: 'solana_address', value: sol },
+          { name: 'evm_address', value: evm },
+        ];
+        
+        // Add optional social fields only if provided
+        if (x) fields.push({ name: 'x_username', value: x });
+        if (reddit) fields.push({ name: 'reddit_username', value: reddit });
+        if (tiktok) fields.push({ name: 'tiktok_username', value: tiktok });
+        if (instagram) fields.push({ name: 'instagram_username', value: instagram });
+        if (bitcointalk) fields.push({ name: 'bitcointalk_username', value: bitcointalk });
+        
+        // Add competition checkboxes as separate boolean fields
+        fields.push({ name: 'reddit_competition__make_short_vids_', value: comp_reddit });
+        fields.push({ name: 'x_raids', value: comp_xraids });
+        fields.push({ name: 'bitcointalk_bump', value: comp_bitcointalk });
+        fields.push({ name: 'tiktok_bump', value: comp_tiktok });
+        fields.push({ name: '1_5_referral___register__root5dao', value: comp_referral });
+        
+        // Add consent
+        fields.push({ name: 'i_agree_to_receive_other_communications_from_root5dao_', value: marketingConsent });
+        
         // Submit to HubSpot Forms API
         const response = await fetch(
           'https://api.hsforms.com/submissions/v3/integration/submit/244595044/7d0a4dbf-824d-45ca-9fc6-e8ec616515af',
@@ -1107,19 +1166,7 @@
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              fields: [
-                { name: 'email', value: email },
-                { name: 'telegram_username', value: telegram },
-                { name: 'solana_address', value: sol },
-                { name: 'evm_address', value: evm },
-                { name: 'x_username', value: x || '' },
-                { name: 'reddit_username', value: reddit || '' },
-                { name: 'tiktok_username', value: tiktok || '' },
-                { name: 'instagram_username', value: instagram || '' },
-                { name: 'bitcointalk_username', value: bitcointalk || '' },
-                { name: 'competitions', value: competitions.join('; ') },
-                { name: 'marketing_consent', value: marketingConsent ? 'Yes' : 'No' },
-              ],
+              fields: fields,
               context: {
                 pageUri: window.location.href,
                 pageName: 'ROOT5 DAO Bounty Registration'
@@ -1128,16 +1175,24 @@
           }
         );
 
+        const responseData = await response.json();
+        
         if (response.ok) {
           msg.textContent = '✓ Registration successful! Welcome to the ROOT5 DAO bounty program.';
           msg.style.color = 'var(--success)';
           document.getElementById('bountyForm').reset();
+          generateMathChallenge(); // New math question for next submission
           
           console.log('✓ Form submitted successfully to HubSpot');
         } else {
-          const error = await response.json();
-          console.error('HubSpot error:', error);
-          throw new Error(error.message || 'Submission failed');
+          console.error('HubSpot error:', responseData);
+          
+          // Check if it's a field name error
+          if (responseData.errors) {
+            console.error('Field errors:', responseData.errors);
+          }
+          
+          throw new Error(responseData.message || 'Submission failed');
         }
         
       } catch (error) {
