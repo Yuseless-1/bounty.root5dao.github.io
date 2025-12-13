@@ -919,8 +919,11 @@
 
             <hr style="border:none;border-top:1px solid rgba(135,142,177,0.06);margin:12px 0;">
 
-            <!-- reCAPTCHA -->
-            <div class="g-recaptcha" data-sitekey="6LfYourSiteKeyHere" style="margin-bottom:12px;"></div>
+            <!-- Honeypot field (hidden from users, catches bots) -->
+            <div style="position:absolute;left:-9999px;opacity:0;" aria-hidden="true">
+              <label for="website">Website</label>
+              <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+            </div>
 
             <div id="formMessage" class="note" aria-live="polite" style="margin-top:12px;"></div>
 
@@ -1000,17 +1003,22 @@
     </footer>
   </div>
 
-  <!-- Google reCAPTCHA v2 -->
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-  
   <script>
     // ============================================
     // CUSTOM FORM SUBMISSION TO HUBSPOT API
-    // With reCAPTCHA, checkboxes, and consent fields
+    // With honeypot spam protection, checkboxes, and consent fields
     // ============================================
     
     document.getElementById('bountyForm').addEventListener('submit', async function(e) {
       e.preventDefault();
+      
+      // Honeypot spam check (bots will fill this field)
+      const honeypot = document.getElementById('website').value;
+      if (honeypot) {
+        // This is a bot - silently reject
+        console.log('Spam detected via honeypot');
+        return;
+      }
       
       // Get all form values
       const email = document.getElementById('email').value.trim();
@@ -1034,9 +1042,6 @@
       const marketingConsent = document.getElementById('marketing_consent').checked;
       const dataConsent = document.getElementById('data_consent').checked;
       
-      // Get reCAPTCHA response
-      const recaptchaResponse = grecaptcha.getResponse();
-      
       const msg = document.getElementById('formMessage');
       const submitBtn = document.getElementById('submitBtn');
 
@@ -1046,12 +1051,6 @@
 
       if(!dataConsent){
         msg.textContent = 'Please consent to data storage to continue.';
-        msg.style.color = 'var(--danger)';
-        return;
-      }
-      
-      if(!recaptchaResponse){
-        msg.textContent = 'Please complete the reCAPTCHA verification.';
         msg.style.color = 'var(--danger)';
         return;
       }
@@ -1133,7 +1132,6 @@
           msg.textContent = '✓ Registration successful! Welcome to the ROOT5 DAO bounty program.';
           msg.style.color = 'var(--success)';
           document.getElementById('bountyForm').reset();
-          grecaptcha.reset();
           
           console.log('✓ Form submitted successfully to HubSpot');
         } else {
@@ -1146,7 +1144,6 @@
         console.error('Form submission error:', error);
         msg.textContent = 'Error submitting form. Please try again or contact support in Telegram.';
         msg.style.color = 'var(--danger)';
-        grecaptcha.reset();
       } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Join the bounty';
