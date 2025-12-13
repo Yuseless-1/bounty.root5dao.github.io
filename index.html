@@ -834,8 +834,8 @@
               <p class="note" style="margin-bottom:12px;">Please choose if you want to join</p>
               
               <label style="display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer;">
-                <input type="checkbox" id="comp_reddit" name="comp_reddit" value="Reddit Competition (Make Short Vids)" />
-                Reddit Competition (Make Short Vids)
+                <input type="checkbox" id="comp_reddit" name="comp_reddit" value="Clipping Campaign (Make Short Vids)" />
+                Clipping Campaign (Make Short Vids)
               </label>
               
               <label style="display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer;">
@@ -844,18 +844,18 @@
               </label>
               
               <label style="display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer;">
-                <input type="checkbox" id="comp_bitcointalk" name="comp_bitcointalk" value="Bitcointalk Bump" />
+                <input type="checkbox" id="comp_bitcointalk" name="comp_bitcointalk" value="Reddit Bump" />
+                Reddit Bump
+              </label>
+              
+              <label style="display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer;">
+                <input type="checkbox" id="comp_tiktok" name="comp_tiktok" value="Bitcointalk Bump" />
                 Bitcointalk Bump
               </label>
               
               <label style="display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer;">
-                <input type="checkbox" id="comp_tiktok" name="comp_tiktok" value="TikTok Bump" />
-                TikTok Bump
-              </label>
-              
-              <label style="display:flex;align-items:center;gap:8px;margin-bottom:8px;cursor:pointer;">
-                <input type="checkbox" id="comp_referral" name="comp_referral" value="1/5 Referral - register @root5dao" />
-                1/5 Referral - register @root5dao
+                <input type="checkbox" id="comp_referral" name="comp_referral" value="TG Referral- register @root5bot" />
+                TG Referral - register @root5bot
               </label>
             </div>
 
@@ -1132,7 +1132,7 @@
       submitBtn.textContent = 'Submitting...';
 
       try {
-        // Build fields array - submit each competition as separate boolean
+        // Build fields array
         const fields = [
           { name: 'email', value: email },
           { name: 'telegram_username', value: telegram },
@@ -1147,15 +1147,29 @@
         if (instagram) fields.push({ name: 'instagram_username', value: instagram });
         if (bitcointalk) fields.push({ name: 'bitcointalk_username', value: bitcointalk });
         
-        // Add competition checkboxes as separate boolean fields
-        fields.push({ name: 'reddit_competition__make_short_vids_', value: comp_reddit });
-        fields.push({ name: 'x_raids', value: comp_xraids });
-        fields.push({ name: 'bitcointalk_bump', value: comp_bitcointalk });
-        fields.push({ name: 'tiktok_bump', value: comp_tiktok });
-        fields.push({ name: '1_5_referral___register__root5dao', value: comp_referral });
+        // Add competition checkboxes - they're a checkbox group, so we send the VALUES of checked boxes
+        const competitionValues = [];
+        if (comp_reddit) competitionValues.push('Clipping Campaign (Make Short Vids)');
+        if (comp_xraids) competitionValues.push('X Raids');
+        if (comp_bitcointalk) competitionValues.push('Reddit Bump');
+        if (comp_tiktok) competitionValues.push('Bitcointalk Bump');
+        if (comp_referral) competitionValues.push('TG Referral- register @root5bot');
         
-        // Add consent
-        fields.push({ name: 'i_agree_to_receive_other_communications_from_root5dao_', value: marketingConsent });
+        // HubSpot expects checkbox groups as a semicolon-separated string
+        if (competitionValues.length > 0) {
+          fields.push({ 
+            name: '0-1/competitions', 
+            value: competitionValues.join(';') 
+          });
+        }
+        
+        // Add marketing consent checkbox
+        if (marketingConsent) {
+          fields.push({ 
+            name: 'i_agree_to_receive_other_communications_from_root5dao_', 
+            value: true 
+          });
+        }
         
         // Submit to HubSpot Forms API
         const response = await fetch(
