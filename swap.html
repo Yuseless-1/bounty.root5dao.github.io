@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROOT5 Bridge - Root5DAO</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .nav-logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.7;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 600px;
+            margin: 4rem auto;
+            padding: 2rem;
+        }
+
+        .bridge-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+        }
+
+        .wallet-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .connect-btn, .bridge-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+        }
+
+        .connect-btn:hover, .bridge-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .connect-btn:disabled, .bridge-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .wallet-info {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-top: 1rem;
+        }
+
+        .chain-selector {
+            margin: 1.5rem 0;
+        }
+
+        .chain-selector label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .chain-select {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .chain-select option {
+            background: #2d3748;
+            color: white;
+        }
+
+        .swap-icon {
+            text-align: center;
+            margin: 1rem 0;
+            font-size: 2rem;
+        }
+
+        .amount-input-container {
+            position: relative;
+            margin: 1.5rem 0;
+        }
+
+        .amount-input {
+            width: 100%;
+            padding: 1rem;
+            padding-right: 100px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .max-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(102, 126, 234, 0.8);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .balance-info {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+        }
+
+        .balance-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 0.5rem 0;
+        }
+
+        .fee-info {
+            background: rgba(255, 193, 7, 0.2);
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .status-message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .status-message.success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .status-message.error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 1px solid rgba(244, 67, 54, 0.3);
+        }
+
+        .status-message a {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            margin-top: 4rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            opacity: 0.7;
+        }
+
+        .footer-text {
+            opacity: 0.7;
+            margin-top: 1rem;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .container {
+                margin: 2rem auto;
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="https://www.root5dao.com" class="nav-logo">
+            <img src="https://www.root5dao.com/layers/pfp_base.png" alt="Root5DAO Logo">
+            <span>Root5DAO</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="https://www.root5dao.com/">Home</a></li>
+            <li><a href="https://www.root5dao.com/proposals">Proposals</a></li>
+            <li><a href="https://www.root5dao.com/vote">Vote</a></li>
+            <li><a href="https://www.root5dao.com/whitepaper">Whitepaper</a></li>
+            <li><a href="https://merch.root5dao.com/">Merch</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>🌉 ROOT5 Bridge</h1>
+        
+        <div class="bridge-card">
+            <!-- Wallet Connection -->
+            <div class="wallet-section">
+                <button id="connectBtn" class="connect-btn">Connect Wallet</button>
+                <div id="walletInfo" class="wallet-info" style="display: none;">
+                    <div><strong>Connected:</strong> <span id="walletAddress"></span></div>
+                    <div><strong>Network:</strong> <span id="currentNetwork"></span></div>
+                </div>
+            </div>
+
+            <!-- Bridge Interface -->
+            <div id="bridgeInterface" style="display: none;">
+                <!-- Source Chain -->
+                <div class="chain-selector">
+                    <label>From Chain</label>
+                    <select id="sourceChain" class="chain-select">
+                        <option value="1">Ethereum</option>
+                        <option value="8453">Base</option>
+                        <option value="42161">Arbitrum</option>
+                        <option value="56">BSC</option>
+                    </select>
+                </div>
+
+                <div class="swap-icon">⬇️</div>
+
+                <!-- Destination Chain -->
+                <div class="chain-selector">
+                    <label>To Chain</label>
+                    <select id="destChain" class="chain-select">
+                        <option value="8453">Base</option>
+                        <option value="42161">Arbitrum</option>
+                        <option value="56">BSC</option>
+                        <option value="1">Ethereum</option>
+                    </select>
+                </div>
+
+                <!-- Amount Input -->
+                <div class="chain-selector">
+                    <label>Amount</label>
+                    <div class="amount-input-container">
+                        <input type="number" id="amountInput" class="amount-input" placeholder="0.0" min="0" step="0.000000001">
+                        <button id="maxBtn" class="max-btn">MAX</button>
+                    </div>
+                </div>
+
+                <!-- Balance Info -->
+                <div class="balance-info">
+                    <div class="balance-row">
+                        <span>Your Balance:</span>
+                        <span id="balance">0 ROOT5</span>
+                    </div>
+                    <div class="balance-row">
+                        <span>You will receive:</span>
+                        <span id="receiveAmount">0 ROOT5</span>
+                    </div>
+                </div>
+
+                <!-- Fee Info -->
+                <div id="feeInfo" class="fee-info" style="display: none;">
+                    <div class="balance-row">
+                        <span>Bridge Fee:</span>
+                        <span id="bridgeFee">~</span>
+                    </div>
+                    <div class="balance-row">
+                        <span>Estimated Time:</span>
+                        <span>5-10 minutes</span>
+                    </div>
+                </div>
+
+                <!-- Bridge Button -->
+                <button id="bridgeBtn" class="bridge-btn" disabled>Bridge Tokens</button>
+
+                <!-- Status Message -->
+                <div id="statusMessage" class="status-message" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <img src="https://www.root5dao.com/layers/pfp_base.png" alt="Root5DAO Logo" style="width: 40px; height: 40px; border-radius: 50%; margin-bottom: 1rem;">
+            <div class="footer-links">
+                <a href="https://www.root5dao.com/">Home</a>
+                <a href="https://www.root5dao.com/">About</a>
+                <a href="https://www.root5dao.com/">Tokenomics</a>
+                <a href="https://www.root5dao.com/">Docs</a>
+                <a href="https://www.root5dao.com/">Contact</a>
+            </div>
+            <div><a href="https://merch.root5dao.com/">Shop Merch</a></div>
+            <div class="footer-text">
+                © 2025 Root5DAO. All rights reserved.<br>
+                Built on Solana • Powered by Community
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.ethers.io/lib/ethers-5.7.2.umd.min.js"></script>
+    <script>
+        // Contract addresses
+        const CONTRACTS = {
+            1: '0xC1b958dDf560AB592831b65dFC6a7f63b2EFe07E',      // Ethereum
+            8453: '0xb062C2505b5a9d80B5718845BdA75fa3c267ce0e',   // Base
+            42161: '0xb062C2505b5a9d80B5718845BdA75fa3c267ce0e',  // Arbitrum
+            56: '0xb062C2505b5a9d80B5718845BdA75fa3c267ce0e'      // BSC
+        };
+
+        const CHAIN_NAMES = {
+            1: 'Ethereum',
+            8453: 'Base',
+            42161: 'Arbitrum',
+            56: 'BSC'
+        };
+
+        const EIDS = {
+            1: 30101,
+            8453: 30184,
+            42161: 30110,
+            56: 30102
+        };
+
+        const OFT_ABI = [
+            'function balanceOf(address) view returns (uint256)',
+            'function quoteSend(tuple(uint32 dstEid, bytes32 to, uint256 amountLD, uint256 minAmountLD, bytes extraOptions, bytes composeMsg, bytes oftCmd) sendParam, bool payInLzToken) view returns (tuple(uint256 nativeFee, uint256 lzTokenFee))',
+            'function send(tuple(uint32 dstEid, bytes32 to, uint256 amountLD, uint256 minAmountLD, bytes extraOptions, bytes composeMsg, bytes oftCmd) sendParam, tuple(uint256 nativeFee, uint256 lzTokenFee) fee, address refundAddress) payable returns (tuple(bytes32 guid, uint64 nonce))'
+        ];
+
+        let provider, signer, userAddress, currentChainId;
+
+        // Connect Wallet
+        document.getElementById('connectBtn').addEventListener('click', async () => {
+            if (typeof window.ethereum === 'undefined') {
+                alert('Please install MetaMask!');
+                return;
+            }
+
+            try {
+                await window.ethereum.request({ method: 'eth_requestAccounts' });
+                provider = new ethers.providers.Web3Provider(window.ethereum);
+                signer = provider.getSigner();
+                userAddress = await signer.getAddress();
+                
+                const network = await provider.getNetwork();
+                currentChainId = network.chainId;
+
+                document.getElementById('walletAddress').textContent = 
+                    userAddress.slice(0, 6) + '...' + userAddress.slice(-4);
+                document.getElementById('currentNetwork').textContent = CHAIN_NAMES[currentChainId] || 'Unknown';
+                
+                document.getElementById('walletInfo').style.display = 'block';
+                document.getElementById('bridgeInterface').style.display = 'block';
+                document.getElementById('connectBtn').style.display = 'none';
+
+                // Set source chain to current network
+                document.getElementById('sourceChain').value = currentChainId;
+
+                await updateBalance();
+
+                // Listen for account/network changes
+                window.ethereum.on('accountsChanged', () => window.location.reload());
+                window.ethereum.on('chainChanged', () => window.location.reload());
+
+            } catch (error) {
+                console.error(error);
+                showStatus('Failed to connect wallet', 'error');
+            }
+        });
+
+        // Update balance
+        async function updateBalance() {
+            try {
+                const sourceChain = parseInt(document.getElementById('sourceChain').value);
+                const contractAddress = CONTRACTS[sourceChain];
+                
+                if (sourceChain !== currentChainId) {
+                    document.getElementById('balance').textContent = 'Switch network to see balance';
+                    return;
+                }
+
+                const contract = new ethers.Contract(contractAddress, OFT_ABI, signer);
+                const balance = await contract.balanceOf(userAddress);
+                const formatted = ethers.utils.formatUnits(balance, 9);
+                
+                document.getElementById('balance').textContent = `${parseFloat(formatted).toFixed(4)} ROOT5`;
+                
+                // Enable/disable bridge button
+                const amount = document.getElementById('amountInput').value;
+                document.getElementById('bridgeBtn').disabled = !amount || parseFloat(amount) <= 0;
+
+            } catch (error) {
+                console.error(error);
+                document.getElementById('balance').textContent = 'Error loading balance';
+            }
+        }
+
+        // MAX button
+        document.getElementById('maxBtn').addEventListener('click', async () => {
+            try {
+                const sourceChain = parseInt(document.getElementById('sourceChain').value);
+                const contractAddress = CONTRACTS[sourceChain];
+                
+                if (sourceChain !== currentChainId) {
+                    await switchNetwork(sourceChain);
+                    return;
+                }
+
+                const contract = new ethers.Contract(contractAddress, OFT_ABI, signer);
+                const balance = await contract.balanceOf(userAddress);
+                const formatted = ethers.utils.formatUnits(balance, 9);
+                
+                document.getElementById('amountInput').value = formatted;
+                updateReceiveAmount();
+                await quoteFee();
+
+            } catch (error) {
+                console.error(error);
+                showStatus('Failed to get balance', 'error');
+            }
+        });
+
+        // Update receive amount
+        function updateReceiveAmount() {
+            const amount = document.getElementById('amountInput').value;
+            document.getElementById('receiveAmount').textContent = amount ? `${amount} ROOT5` : '0 ROOT5';
+            document.getElementById('bridgeBtn').disabled = !amount || parseFloat(amount) <= 0;
+        }
+
+        document.getElementById('amountInput').addEventListener('input', () => {
+            updateReceiveAmount();
+            quoteFee();
+        });
+
+        // Quote fee
+        async function quoteFee() {
+            const amount = document.getElementById('amountInput').value;
+            if (!amount || parseFloat(amount) <= 0) {
+                document.getElementById('feeInfo').style.display = 'none';
+                return;
+            }
+
+            try {
+                const sourceChain = parseInt(document.getElementById('sourceChain').value);
+                const destChain = parseInt(document.getElementById('destChain').value);
+                
+                if (sourceChain !== currentChainId) return;
+
+                const contractAddress = CONTRACTS[sourceChain];
+                const contract = new ethers.Contract(contractAddress, OFT_ABI, signer);
+                
+                const amountWei = ethers.utils.parseUnits(amount, 9);
+                const toBytes32 = ethers.utils.hexZeroPad(userAddress, 32);
+                
+                // Simple options
+                const options = '0x00030100110100000000000000000000000000030d40';
+                
+                const sendParam = {
+                    dstEid: EIDS[destChain],
+                    to: toBytes32,
+                    amountLD: amountWei,
+                    minAmountLD: amountWei,
+                    extraOptions: options,
+                    composeMsg: '0x',
+                    oftCmd: '0x'
+                };
+
+                const quote = await contract.quoteSend(sendParam, false);
+                const fee = ethers.utils.formatEther(quote.nativeFee);
+                
+                document.getElementById('bridgeFee').textContent = `~${parseFloat(fee).toFixed(6)} ${CHAIN_NAMES[sourceChain] === 'BSC' ? 'BNB' : 'ETH'}`;
+                document.getElementById('feeInfo').style.display = 'block';
+
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        // Switch network
+        async function switchNetwork(chainId) {
+            const chainParams = {
+                1: { chainId: '0x1', chainName: 'Ethereum' },
+                8453: { 
+                    chainId: '0x2105',
+                    chainName: 'Base',
+                    rpcUrls: ['https://mainnet.base.org'],
+                    nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+                    blockExplorerUrls: ['https://basescan.org']
+                },
+                42161: {
+                    chainId: '0xa4b1',
+                    chainName: 'Arbitrum',
+                    rpcUrls: ['https://arb1.arbitrum.io/rpc'],
+                    nativeCurrency: { name: 'ETH', symbol: 'ETH', decimals: 18 },
+                    blockExplorerUrls: ['https://arbiscan.io']
+                },
+                56: {
+                    chainId: '0x38',
+                    chainName: 'BSC',
+                    rpcUrls: ['https://bsc-dataseed.binance.org'],
+                    nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 },
+                    blockExplorerUrls: ['https://bscscan.com']
+                }
+            };
+
+            try {
+                await window.ethereum.request({
+                    method: 'wallet_switchEthereumChain',
+                    params: [{ chainId: chainParams[chainId].chainId }],
+                });
+            } catch (error) {
+                if (error.code === 4902) {
+                    await window.ethereum.request({
+                        method: 'wallet_addEthereumChain',
+                        params: [chainParams[chainId]],
+                    });
+                }
+            }
+        }
+
+        // Bridge tokens
+        document.getElementById('bridgeBtn').addEventListener('click', async () => {
+            const sourceChain = parseInt(document.getElementById('sourceChain').value);
+            const destChain = parseInt(document.getElementById('destChain').value);
+            const amount = document.getElementById('amountInput').value;
+
+            if (sourceChain === destChain) {
+                showStatus('Please select different chains', 'error');
+                return;
+            }
+
+            if (sourceChain !== currentChainId) {
+                showStatus('Please switch to ' + CHAIN_NAMES[sourceChain], 'error');
+                await switchNetwork(sourceChain);
+                return;
+            }
+
+            try {
+                document.getElementById('bridgeBtn').disabled = true;
+                document.getElementById('bridgeBtn').innerHTML = '<span class="loading"></span> Bridging...';
+
+                const contractAddress = CONTRACTS[sourceChain];
+                const contract = new ethers.Contract(contractAddress, OFT_ABI, signer);
+                
+                const amountWei = ethers.utils.parseUnits(amount, 9);
+                const toBytes32 = ethers.utils.hexZeroPad(userAddress, 32);
+                const options = '0x00030100110100000000000000000000000000030d40';
+                
+                const sendParam = {
+                    dstEid: EIDS[destChain],
+                    to: toBytes32,
+                    amountLD: amountWei,
+                    minAmountLD: amountWei,
+                    extraOptions: options,
+                    composeMsg: '0x',
+                    oftCmd: '0x'
+                };
+
+                const quote = await contract.quoteSend(sendParam, false);
+                
+                const tx = await contract.send(
+                    sendParam,
+                    { nativeFee: quote.nativeFee, lzTokenFee: 0 },
+                    userAddress,
+                    { value: quote.nativeFee }
+                );
+
+                showStatus('Transaction submitted! Waiting for confirmation...', 'success');
+                
+                await tx.wait();
+                
+                showStatus(
+                    `✅ Bridge successful! <br>Track: <a href="https://layerzeroscan.com/tx/${tx.hash}" target="_blank">LayerZero Scan</a><br>Wait 5-10 minutes for tokens to arrive on ${CHAIN_NAMES[destChain]}`,
+                    'success'
+                );
+
+                document.getElementById('amountInput').value = '';
+                updateReceiveAmount();
+                await updateBalance();
+
+            } catch (error) {
+                console.error(error);
+                showStatus('Bridge failed: ' + (error.reason || error.message), 'error');
+            } finally {
+                document.getElementById('bridgeBtn').disabled = false;
+                document.getElementById('bridgeBtn').textContent = 'Bridge Tokens';
+            }
+        });
+
+        // Chain change handlers
+        document.getElementById('sourceChain').addEventListener('change', updateBalance);
+        document.getElementById('destChain').addEventListener('change', quoteFee);
+
+        // Show status message
+        function showStatus(message, type) {
+            const statusEl = document.getElementById('statusMessage');
+            statusEl.innerHTML = message;
+            statusEl.className = 'status-message ' + type;
+            statusEl.style.display = 'block';
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    statusEl.style.display = 'none';
+                }, 10000);
+            }
+        }
+    </script>
+</body>
+</html>
