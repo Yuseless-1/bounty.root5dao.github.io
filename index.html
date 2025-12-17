@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>ROOT5 DAO — Bonding Milestone Bounty Program</title>
+  <title>ROOT5 DAO — Time & Bonding Hybrid Bounty Program</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="ROOT5 DAO bounty program — bonding milestone unlocks at 50%, 65%, 80%, and 100% for distributions and staking." />
+  <meta name="description" content="ROOT5 DAO bounty program — hybrid time + bonding milestone unlocks with market cap based distributions." />
 
   <style>
     :root{
@@ -314,43 +314,64 @@
       letter-spacing:0.05em;
     }
 
-    /* Milestone Cards */
-    .milestone-grid{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:10px;
-      margin-top:12px;
+    /* Timeline Styles */
+    .timeline{
+      margin:20px 0;
+      position:relative;
     }
-    @media (max-width:980px){.milestone-grid{grid-template-columns:repeat(2,1fr)}}
-    @media (max-width:580px){.milestone-grid{grid-template-columns:1fr}}
     
-    .milestone-card{
-      background:linear-gradient(160deg, rgba(86,243,154,0.04), rgba(127,93,255,0.02));
-      border-radius:var(--radius-md);
-      padding:12px;
-      border:1px solid rgba(135,142,177,0.12);
+    .timeline-track{
+      height:4px;
+      background:rgba(255,255,255,0.1);
+      border-radius:2px;
+      position:relative;
+    }
+    
+    .timeline-progress{
+      height:100%;
+      background:linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+      border-radius:2px;
+      width:48%;
+    }
+    
+    .timeline-points{
+      display:flex;
+      justify-content:space-between;
+      margin-top:10px;
+      position:relative;
+    }
+    
+    .timeline-point{
       text-align:center;
+      width:100px;
     }
     
-    .milestone-percent{
-      font-size:20px;
-      font-weight:800;
-      color:var(--accent-primary);
-      margin-bottom:6px;
+    .point-indicator{
+      width:16px;
+      height:16px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.2);
+      margin:0 auto 8px;
+      position:relative;
+      border:2px solid transparent;
     }
     
-    .milestone-label{
+    .point-indicator.active{
+      background:var(--accent-primary);
+      border-color:rgba(86,243,154,0.5);
+      box-shadow:0 0 10px rgba(86,243,154,0.5);
+    }
+    
+    .point-label{
       font-size:11px;
       color:var(--text-muted);
-      text-transform:uppercase;
-      letter-spacing:0.05em;
-      margin-bottom:8px;
+      font-weight:700;
     }
     
-    .milestone-desc{
-      font-size:12px;
+    .point-subtitle{
+      font-size:10px;
       color:var(--text-soft);
-      line-height:1.4;
+      margin-top:2px;
     }
 
     /* HUBSPOT FORM STYLING (unchanged) */
@@ -529,12 +550,12 @@
 
     <!-- Header -->
     <header class="top">
-      <div class="eyebrow"><span class="dot"></span> Bonding milestone program</div>
+      <div class="eyebrow"><span class="dot"></span> Hybrid time + bonding program</div>
       <h1>ROOT5 DAO Bounty Program</h1>
-      <p class="lead">100,000,000 ROOT5 tokens allocated. Rewards unlock at bonding milestones: 50%, 65%, 80%, and 100%. Currently at 48% bonding.</p>
+      <p class="lead">100,000,000 ROOT5 tokens allocated. Hybrid distribution based on time + bonding milestones. Currently at 48% bonding ($8.6K market cap).</p>
       <div class="pills">
         <div class="pill"><strong>100,000,000</strong> ROOT5 allocated</div>
-        <div class="pill">Milestone‑based unlocks</div>
+        <div class="pill">Time + bonding hybrid</div>
         <div class="pill"><strong>48%</strong> bonded · $8.6K MC</div>
       </div>
     </header>
@@ -547,7 +568,7 @@
         <section class="panel" aria-labelledby="status-title">
           <div class="header">
             <div class="title" id="status-title">Current Status</div>
-            <div class="tag">48% · Active</div>
+            <div class="tag">48% · Week 1</div>
           </div>
 
           <div class="current-stats">
@@ -560,76 +581,121 @@
               <div class="stat-label">Market Cap</div>
             </div>
             <div class="stat-box">
-              <div class="stat-value">50%</div>
-              <div class="stat-label">Next Milestone</div>
+              <div class="stat-value">Week 1</div>
+              <div class="stat-label">Bounty Week</div>
             </div>
           </div>
 
-          <div class="progress-container">
-            <div class="progress-bar" style="width: 48%"></div>
-            <div class="progress-milestones">
-              <div class="milestone-marker" style="left: 0%"></div>
-              <div class="milestone-marker" style="left: 50%"></div>
-              <div class="milestone-marker" style="left: 65%"></div>
-              <div class="milestone-marker" style="left: 80%"></div>
-              <div class="milestone-marker" style="left: 100%"></div>
-              
-              <div class="milestone" style="left: 0%">Start</div>
-              <div class="milestone active" style="left: 50%">50%</div>
-              <div class="milestone" style="left: 65%">65%</div>
-              <div class="milestone" style="left: 80%">80%</div>
-              <div class="milestone" style="left: 100%">100%</div>
+          <div class="timeline">
+            <div class="timeline-track">
+              <div class="timeline-progress" style="width: 48%"></div>
+            </div>
+            <div class="timeline-points">
+              <div class="timeline-point">
+                <div class="point-indicator"></div>
+                <div class="point-label">Week 0</div>
+                <div class="point-subtitle">Start</div>
+              </div>
+              <div class="timeline-point">
+                <div class="point-indicator active"></div>
+                <div class="point-label">Week 2</div>
+                <div class="point-subtitle">Tier 3 check</div>
+              </div>
+              <div class="timeline-point">
+                <div class="point-indicator"></div>
+                <div class="point-label">Week 3</div>
+                <div class="point-subtitle">Staking check</div>
+              </div>
+              <div class="timeline-point">
+                <div class="point-indicator"></div>
+                <div class="point-label">Week 4</div>
+                <div class="point-subtitle">Tier 1 unlocks</div>
+              </div>
+              <div class="timeline-point">
+                <div class="point-indicator"></div>
+                <div class="point-label">Week 8</div>
+                <div class="point-subtitle">Bounty ends</div>
+              </div>
             </div>
           </div>
 
-          <p>Rewards unlock in phases as bonding progresses. <strong>Currently at 48%</strong> — 2% away from first unlock at 50%.</p>
+          <p><strong>Hybrid system:</strong> Distributions combine time-based weeks with bonding percentage milestones.</p>
 
           <details>
             <summary>See more ▾</summary>
-            <p>ROOT5 bonding curve is currently 48% complete. Each milestone unlocks new bounty rewards for participants:</p>
+            <p>ROOT5 uses a hybrid time + bonding milestone system:</p>
             <ul>
-              <li><strong>50% milestone:</strong> Tier 1 distributions begin + competitions/clipping start</li>
-              <li><strong>65% milestone:</strong> Staking unlocks + Tier 2 distributions begin</li>
-              <li><strong>80% milestone:</strong> Tier 3 distributions + enhanced rewards</li>
-              <li><strong>100% milestone:</strong> Full DAO transition + governance activation</li>
+              <li><strong>Time-based:</strong> Tier 1 unlocks Week 4, Tier 3 checks Week 2</li>
+              <li><strong>Bonding-based:</strong> Tier 2 needs 75%, Tier 3 needs 65%</li>
+              <li><strong>Combined:</strong> Staking needs Week 3 AND 75% bonding</li>
+              <li><strong>Market cap scaling:</strong> Distributions scale with market cap growth</li>
             </ul>
-            <p>Your participation helps reach these milestones faster.</p>
           </details>
         </section>
 
-        <!-- Milestone Overview -->
-        <section class="panel" aria-labelledby="milestones-title" style="margin-top:12px">
+        <!-- Hybrid Distribution System -->
+        <section class="panel" aria-labelledby="hybrid-title" style="margin-top:12px">
           <div class="header">
-            <div class="title" id="milestones-title">Milestone Overview</div>
-            <div class="tag">Unlock Schedule</div>
+            <div class="title" id="hybrid-title">Hybrid Distribution System</div>
+            <div class="tag">Time + Bonding</div>
           </div>
 
-          <div class="milestone-grid">
-            <div class="milestone-card">
-              <div class="milestone-percent">50%</div>
-              <div class="milestone-label">First Unlock</div>
-              <div class="milestone-desc">Tier 1 distributions, competitions & clipping begin</div>
-            </div>
-            <div class="milestone-card">
-              <div class="milestone-percent">65%</div>
-              <div class="milestone-label">Staking Starts</div>
-              <div class="milestone-desc">12-week staking begins, Tier 2 distributions</div>
-            </div>
-            <div class="milestone-card">
-              <div class="milestone-percent">80%</div>
-              <div class="milestone-label">Enhanced Rewards</div>
-              <div class="milestone-desc">Tier 3 distributions, bonus multipliers</div>
-            </div>
-            <div class="milestone-card">
-              <div class="milestone-percent">100%</div>
-              <div class="milestone-label">Full Unlock</div>
-              <div class="milestone-desc">DAO governance, all rewards active</div>
-            </div>
+          <p>Distributions trigger based on BOTH time (weeks) AND bonding progress.</p>
+
+          <div class="formula" aria-hidden="false">
+            <strong>Tier 3 Distribution:</strong><br>
+            IF (Week ≥ 2) AND (Bonding ≥ 65%) THEN distribute<br>
+            <br>
+            <strong>Tier 2 Distribution:</strong><br>
+            IF (Bonding ≥ 75%) THEN distribute<br>
+            <br>
+            <strong>Tier 1 Distribution:</strong><br>
+            IF (Week ≥ 4) THEN distribute (regardless of bonding)<br>
+            <br>
+            <strong>Staking Unlock:</strong><br>
+            IF (Week ≥ 3) AND (Bonding ≥ 75%) THEN unlock
           </div>
 
           <details>
             <summary>See more ▾</summary>
-            <p>All distributions are tied to bonding progress. The more participants help bond, the faster rewards unlock for everyone.</p>
+            <p>This hybrid system ensures:</p>
+            <ul>
+              <li>Early activity is rewarded but tied to bonding progress</li>
+              <li>Tier 1 is guaranteed at mid-point for all active participants</li>
+              <li>Higher tiers require helping reach bonding milestones</li>
+              <li>Staking requires both time commitment AND bonding success</li>
+            </ul>
+          </details>
+        </section>
+
+        <!-- Market Cap Based Distribution -->
+        <section class="panel" aria-labelledby="marketcap-title" style="margin-top:12px">
+          <div class="header">
+            <div class="title" id="marketcap-title">Market Cap Based Scaling</div>
+            <div class="tag">Dynamic Rewards</div>
+          </div>
+
+          <p>Distribution amounts scale with market cap growth from current $8.6K.</p>
+
+          <ul>
+            <li><strong>Base distribution:</strong> Calculated at current $8.6K market cap</li>
+            <li><strong>Growth multiplier:</strong> Rewards increase as market cap grows</li>
+            <li><strong>Weekly snapshots:</strong> Market cap recorded each distribution day</li>
+            <li><strong>Formula:</strong> Your share × (Current MC / $8.6K)<sup>0.5</sup></li>
+          </ul>
+
+          <details>
+            <summary>See more ▾</summary>
+            <p>Market cap scaling ensures early participants benefit from ecosystem growth:</p>
+            <div class="formula">
+              Your Adjusted Reward = Base Reward × √(Current MC / 8600)
+              <br><br>
+              Example: Base reward = 10,000 ROOT5<br>
+              If MC grows to $34,400 (4×):<br>
+              Adjusted = 10,000 × √(34400 / 8600)<br>
+              = 10,000 × √4 = 10,000 × 2 = 20,000 ROOT5
+            </div>
+            <p>Square root scaling prevents excessive inflation while rewarding growth.</p>
           </details>
         </section>
 
@@ -637,94 +703,23 @@
         <section class="panel" aria-labelledby="overview-title" style="margin-top:12px">
           <div class="header">
             <div class="title" id="overview-title">Token Allocation</div>
-            <div class="tag">Milestone‑Based</div>
+            <div class="tag">Hybrid Unlocks</div>
           </div>
 
-          <p>100,000,000 ROOT5 tokens allocated across tiers, competitions, clipping, and staking. All unlock based on bonding milestones.</p>
+          <p>100,000,000 ROOT5 tokens allocated across tiers, competitions, clipping, and staking.</p>
 
           <ul>
-            <li><span class="strong">Tier 1 (50%):</span> 5,000,000 ROOT5 — basic supporters</li>
-            <li><span class="strong">Tier 2 (65%):</span> 24,500,000 ROOT5 — active contributors</li>
-            <li><span class="strong">Tier 3 (80%):</span> 30,500,000 ROOT5 — champions/leaders</li>
-            <li><span class="strong">Competitions (50%):</span> 10,000,000 ROOT5 — weekly raids</li>
-            <li><span class="strong">Clipping (50%):</span> 14,000,000 ROOT5 — creator campaign</li>
-            <li><span class="strong">Staking (65%):</span> 16,000,000 ROOT5 — 12‑week program</li>
+            <li><span class="strong">Tier 1 (Week 4):</span> 5,000,000 ROOT5 — unlocks Week 4 regardless of bonding</li>
+            <li><span class="strong">Tier 2 (75% bonding):</span> 24,500,000 ROOT5 — requires 75% bonding</li>
+            <li><span class="strong">Tier 3 (Week 2 + 65%):</span> 30,500,000 ROOT5 — Week 2 AND 65% bonding</li>
+            <li><span class="strong">Competitions (Week 1):</span> 10,000,000 ROOT5 — weekly from start</li>
+            <li><span class="strong">Clipping (Week 1):</span> 14,000,000 ROOT5 — weekly from start</li>
+            <li><span class="strong">Staking (Week 3 + 75%):</span> 16,000,000 ROOT5 — Week 3 AND 75% bonding</li>
           </ul>
 
           <details>
             <summary>See more ▾</summary>
-            <p>This is a milestone‑driven system. The more we bond together, the more rewards unlock for everyone. All distributions are tracked across Telegram, X, Reddit, and on‑chain activity with anti‑bot verification.</p>
-          </details>
-        </section>
-
-        <!-- Strategic goals -->
-        <section class="panel" aria-labelledby="goals-title" style="margin-top:12px">
-          <div class="header">
-            <div class="title" id="goals-title">Strategic Goals</div>
-            <div class="tag">Bonding Focus</div>
-          </div>
-
-          <p>The bounty program directly supports ROOT5 DAO's migration to Pump.fun and multi‑chain expansion through bonding milestones.</p>
-
-          <ul>
-            <li><strong>Complete bonding curve:</strong> Currently at 48%. Need to reach 100% for full migration.</li>
-            <li><strong>Establish multi‑chain markets:</strong> Incentivize liquidity on other chains and DEXs.</li>
-            <li><strong>Grow community & holders:</strong> Mass onboarding through Tier 1, retention through Tier 2/3.</li>
-            <li><strong>Amplify marketing:</strong> Raids and creator campaigns boost visibility as milestones are reached.</li>
-          </ul>
-
-          <details>
-            <summary>See more ▾</summary>
-            <p>Every milestone reached benefits all participants. The sooner we complete bonding, the sooner full rewards unlock and the DAO can transition to full governance.</p>
-          </details>
-        </section>
-
-        <!-- Allocation logic & softcaps -->
-        <section class="panel" aria-labelledby="alloc-title" style="margin-top:12px">
-          <div class="header">
-            <div class="title" id="alloc-title">Token Allocation & Softcaps</div>
-            <div class="tag">Milestone-Based</div>
-          </div>
-
-          <p>ROOT5 uses milestone-based softcaps to ensure fairness and long‑term sustainability.</p>
-
-          <ul>
-            <li><strong>Tier 1 (50% milestone):</strong> 5,000,000 ROOT5 — fully distributed at 50% bonding</li>
-            <li><strong>Tier 2 (65% milestone):</strong> 24,500,000 ROOT5 — min 300, max 3,000 participants</li>
-            <li><strong>Tier 3 (80% milestone):</strong> 30,500,000 ROOT5 — min 50, max 500 participants</li>
-            <li><strong>Competitions (50% milestone):</strong> 10,000,000 ROOT5 — weekly pools begin at 50%</li>
-            <li><strong>Clipping (50% milestone):</strong> 14,000,000 ROOT5 — creator campaign starts at 50%</li>
-            <li><strong>Staking (65% milestone):</span> 16,000,000 ROOT5 — 12‑week program starts at 65%</li>
-          </ul>
-
-          <details>
-            <summary>See more ▾</summary>
-            <p>Softcaps prevent small groups from capturing outsized rewards and ensure the DAO retains tokens for critical goals. Any unused tokens from softcapped pools are routed to the treasury automatically. Milestone requirements must be met before distributions begin.</p>
-          </details>
-        </section>
-
-        <!-- Softcap rules & formulas -->
-        <section class="panel" aria-labelledby="softcap-title" style="margin-top:12px">
-          <div class="header">
-            <div class="title" id="softcap-title">Milestone Distribution Rules</div>
-            <div class="tag">Mechanics</div>
-          </div>
-
-          <p>Distributions only begin when bonding milestones are reached. Rewards scale based on participation.</p>
-
-          <div class="formula" aria-hidden="false">
-            <strong>When milestone reached:</strong><br>
-            distribution = pool × (current_bonding / 100)<br>
-            remaining = pool − distribution → delayed until next milestone
-            <br><br>
-            <strong>Example at 50% milestone:</strong><br>
-            Tier 1 distribution = 5,000,000 × 0.50 = 2,500,000 ROOT5
-          </div>
-
-          <details>
-            <summary>See more ▾</summary>
-            <p><strong>Example (Tier 3 at 80% milestone):</strong> Pool = 30,500,000 ROOT5; bonding reaches 80% → distribution = 30,500,000 × 0.80 = 24,400,000 ROOT5; remaining 6,100,000 distributed at 100% milestone.</p>
-            <p>These formulas ensure participants receive increasing rewards as bonding progresses, with full distribution only at 100% completion.</p>
+            <p>This hybrid system rewards both early participation AND bonding contribution. Higher tiers require helping reach critical bonding milestones.</p>
           </details>
         </section>
 
@@ -732,16 +727,16 @@
         <section class="panel" aria-labelledby="tiers-title" style="margin-top:12px">
           <div class="header">
             <div class="title" id="tiers-title">Three‑Tier System</div>
-            <div class="tag">Unlocks at Milestones</div>
+            <div class="tag">Hybrid Unlocks</div>
           </div>
 
-          <p>Your tier reflects your commitment level — rewards unlock as bonding progresses through milestones.</p>
+          <p>Each tier unlocks based on different time + bonding combinations.</p>
 
           <div class="tier-grid" role="list">
             <!-- Tier 1 -->
             <div class="tier" role="listitem" aria-labelledby="t1">
               <div class="name" id="t1">🥉 Tier 1 — Supporters</div>
-              <div class="meta"><span class="strong">Unlocks at 50%</span> · 5M ROOT5</div>
+              <div class="meta"><span class="strong">Week 4 unlock</span> · 5M ROOT5</div>
               <ul>
                 <li>Join Telegram + broadcast</li>
                 <li>Follow X and join r/root5dao</li>
@@ -749,14 +744,15 @@
               </ul>
               <details>
                 <summary>See more ▾</summary>
-                <p>Tier 1 unlocks when bonding reaches 50%. Basic entry level for community growth. Rewards distributed proportionally as bonding continues to 100%.</p>
+                <p><strong>Unlocks Week 4 regardless of bonding %.</strong> Basic entry level for community growth. Guaranteed distribution at bounty midpoint.</p>
+                <p><strong>Distribution:</strong> Full 5,000,000 ROOT5 pool distributed Week 4.</p>
               </details>
             </div>
 
             <!-- Tier 2 -->
             <div class="tier" role="listitem" aria-labelledby="t2">
               <div class="name" id="t2">🥈 Tier 2 — Contributors</div>
-              <div class="meta"><span class="strong">Unlocks at 65%</span> · 24.5M ROOT5</div>
+              <div class="meta"><span class="strong">75% bonding</span> · 24.5M ROOT5</div>
               <ul>
                 <li>Everything in Tier 1</li>
                 <li>Invest ≥ $60 and hold</li>
@@ -764,15 +760,16 @@
               </ul>
               <details>
                 <summary>See more ▾</summary>
-                <p>Tier 2 unlocks at 65% bonding. For active participants with skin in the game. Eligible for staking with 1.0× multiplier once 65% milestone reached.</p>
-                <p><strong>Softcaps:</strong> min 300, max 3,000. If fewer than 300 qualify, rewards scale down.</p>
+                <p><strong>Unlocks when bonding reaches 75%.</strong> For active participants helping reach bonding milestones.</p>
+                <p><strong>Distribution:</strong> Begins when 75% bonding achieved. Scales with market cap growth.</p>
+                <p><strong>Softcaps:</strong> min 300, max 3,000 participants.</p>
               </details>
             </div>
 
             <!-- Tier 3 -->
             <div class="tier" role="listitem" aria-labelledby="t3">
               <div class="name" id="t3">🥇 Tier 3 — Champions</div>
-              <div class="meta"><span class="strong">Unlocks at 80%</span> · 30.5M ROOT5</div>
+              <div class="meta"><span class="strong">Week 2 + 65%</span> · 30.5M ROOT5</div>
               <ul>
                 <li>Everything in Tier 2</li>
                 <li>Chip‑in campaigns & referrals</li>
@@ -780,95 +777,27 @@
               </ul>
               <details>
                 <summary>See more ▾</summary>
-                <p>Tier 3 unlocks at 80% bonding. For leaders and heavy contributors. Eligible for staking with 1.5× multiplier and prioritized for ambassador roles.</p>
-                <p><strong>Softcaps:</strong> min 50, max 500. If fewer than 50 qualify, rewards scale down.</p>
+                <p><strong>Unlocks Week 2 AND 65% bonding.</strong> For leaders helping early bonding progress.</p>
+                <p><strong>Distribution:</strong> Begins Week 2 if 65% bonding reached. Base distribution with market cap scaling.</p>
+                <p><strong>Softcaps:</strong> min 50, max 500 participants.</p>
               </details>
             </div>
           </div>
-        </section>
-
-        <!-- Competitions -->
-        <section class="panel" aria-labelledby="comps-title" style="margin-top:12px">
-          <div class="header">
-            <div class="title" id="comps-title">Competitions (10%)</div>
-            <div class="tag">Unlocks at 50%</div>
-          </div>
-
-          <p>10,000,000 ROOT5 reserved for weekly competitions over 8 weeks. <strong>Begins when bonding reaches 50%.</strong></p>
-
-          <ul>
-            <li><strong>Reddit raids:</strong> 3,000,000 ROOT5</li>
-            <li><strong>X raids:</strong> 3,000,000 ROOT5</li>
-            <li><strong>Referral competition:</strong> 4,000,000 ROOT5</li>
-          </ul>
-
-          <details>
-            <summary>See more ▾</summary>
-            <h4>Competition Schedule</h4>
-            <p>Weekly competitions begin when 50% bonding milestone is reached and run for 8 consecutive weeks:</p>
-            <ul>
-              <li><strong>Reddit raids:</strong> One main thread per day via Telegram. Weekly pool: ~375,000 ROOT5.</li>
-              <li><strong>X raids:</strong> One main X post per day via Freya bot. Weekly pool: ~375,000 ROOT5.</li>
-              <li><strong>Referral competition:</strong> Bring real humans via ROOT5 bot. Weekly pool: 500,000 ROOT5.</li>
-            </ul>
-            <p class="note">Competition rewards are in addition to your tier allocation and staking share. Unused competition tokens return to treasury.</p>
-          </details>
-        </section>
-
-        <!-- Clipping -->
-        <section class="panel" aria-labelledby="clip-title" style="margin-top:12px">
-          <div class="header">
-            <div class="title" id="clip-title">Clipping Campaign (14%)</div>
-            <div class="tag">Unlocks at 50%</div>
-          </div>
-
-          <p>14,000,000 ROOT5 for creators. <strong>Begins when bonding reaches 50% milestone,</strong> runs for 8 weeks.</p>
-
-          <ul>
-            <li><strong>Total pool:</strong> 14,000,000 ROOT5</li>
-            <li><strong>Base pay:</strong> 25,000 ROOT5 per accepted video</li>
-            <li><strong>Max accepted:</strong> 4 videos per week (32 total)</li>
-            <li><strong>Weekly prize:</strong> 1,650,000 ROOT5 for #1 video</li>
-          </ul>
-
-          <details>
-            <summary>See more ▾</summary>
-            <h4>Campaign Structure</h4>
-            <ul>
-              <li>Base reward pool: 800,000 ROOT5</li>
-              <li>Engagement pool: 13,200,000 ROOT5</li>
-              <li>Total: 14,000,000 ROOT5 over 8 weeks starting at 50% bonding</li>
-            </ul>
-
-            <h4>Base rewards</h4>
-            <ul>
-              <li>25,000 ROOT5 per accepted video</li>
-              <li>Only 4 videos accepted per week across all participants</li>
-              <li>Total accepted videos: 32 for the entire program</li>
-            </ul>
-
-            <h4>Weekly engagement reward</h4>
-            <ul>
-              <li>Weekly prize: 1,650,000 ROOT5 to the top‑performing video</li>
-              <li>8 weeks × 1,650,000 = 13,200,000 ROOT5 total engagement pool</li>
-            </ul>
-
-            <p class="note">If fewer videos are submitted, unused tokens return to the treasury.</p>
-          </details>
         </section>
 
         <!-- Staking -->
         <section class="panel" aria-labelledby="stake-title" style="margin-top:12px">
           <div class="header">
             <div class="title" id="stake-title">Staking Rewards (16%)</div>
-            <div class="tag">Unlocks at 65%</div>
+            <div class="tag">Week 3 + 75% bonding</div>
           </div>
 
-          <p><strong>16,000,000 ROOT5 allocated. Staking begins when bonding reaches 65% milestone.</strong></p>
+          <p><strong>16,000,000 ROOT5 allocated. Staking begins Week 3 AND requires 75% bonding.</strong></p>
 
           <ul>
-            <li><strong>Start:</strong> 12‑week program begins at 65% bonding</li>
-            <li><strong>Weekly pool:</strong> ~1,333,333 ROOT5</li>
+            <li><strong>Unlock:</strong> Week 3 + 75% bonding milestone</li>
+            <li><strong>Duration:</strong> 8‑week program from unlock date</li>
+            <li><strong>Weekly pool:</strong> ~2,000,000 ROOT5</li>
             <li><strong>Tier 2 multiplier:</strong> 1.0×</li>
             <li><strong>Tier 3 multiplier:</strong> 1.5×</li>
             <li><strong>Minimum:</strong> invest ≥ $60 and hold throughout</li>
@@ -881,7 +810,7 @@
               <li>Must qualify for Tier 2 or Tier 3</li>
               <li>Must invest at least $60 worth of ROOT5</li>
               <li>Must hold for the duration of the staking program</li>
-              <li><strong>Program begins when 65% bonding milestone is reached</strong></li>
+              <li><strong>Program begins when BOTH Week 3 AND 75% bonding are reached</strong></li>
             </ul>
 
             <h4>Multipliers</h4>
@@ -890,51 +819,49 @@
               <li>Tier 3: 1.5× staking weight (earns 50% more for the same stake)</li>
             </ul>
 
-            <h4>Example</h4>
-            <p>Two users each stake $100 worth of ROOT5: Tier 2 weight = 100; Tier 3 weight = 150; Tier 3 earns 50% more each week.</p>
+            <h4>Example Timeline</h4>
+            <p>If 75% bonding reached by Week 3: Staking begins immediately, runs Weeks 3-10.</p>
+            <p>If 75% bonding reached Week 5: Staking begins Week 5, runs Weeks 5-12.</p>
 
-            <p class="note">Unused staking tokens return to treasury. Staking rewards are distributed weekly for 12 weeks starting from the 65% milestone date.</p>
+            <p class="note">Staking rewards are distributed weekly for 8 weeks starting from unlock date.</p>
           </details>
         </section>
 
-        <!-- Participant examples -->
-        <section class="panel" aria-labelledby="examples-title" style="margin-top:12px">
+        <!-- Weekly Schedule -->
+        <section class="panel" aria-labelledby="schedule-title" style="margin-top:12px">
           <div class="header">
-            <div class="title" id="examples-title">Participant Examples</div>
-            <div class="tag">Milestone-Based</div>
+            <div class="title" id="schedule-title">Weekly Schedule</div>
+            <div class="tag">8-Week Bounty</div>
           </div>
 
-          <p>Examples of how participants interact with the milestone-based bounty program.</p>
+          <p>8-week bounty program with weekly competitions, clipping, and milestone checks.</p>
+
+          <div class="formula" aria-hidden="false">
+            <strong>Week 1-2:</strong> Competitions & clipping active<br>
+            <strong>Week 2 Check:</strong> Tier 3 distribution if 65% bonding<br>
+            <strong>Week 3 Check:</strong> Staking unlock if 75% bonding<br>
+            <strong>Week 4:</strong> Tier 1 distribution (regardless of bonding)<br>
+            <strong>Week 5-8:</strong> Continue competitions & clipping<br>
+            <strong>Week 8:</strong> Final distributions
+          </div>
 
           <details>
             <summary>See more ▾</summary>
-
-            <h4>Example 1 — The Grinder (Tier 2 + staking)</h4>
+            <h4>Weekly Activities</h4>
             <ul>
-              <li>Invests $60–$80 in ROOT5</li>
-              <li>Shows up daily in Telegram</li>
-              <li>Joins most X and Reddit raids</li>
-              <li>Does not create long‑form content but is always present</li>
+              <li><strong>Competitions:</strong> Weekly pools from Week 1-8</li>
+              <li><strong>Clipping:</strong> Weekly submissions from Week 1-8</li>
+              <li><strong>Milestone Checks:</strong> Week 2, 3, 4 for tier distributions</li>
+              <li><strong>Staking:</strong> 8-week program from unlock date</li>
             </ul>
-            <p>This user qualifies for Tier 2 when 65% bonding is reached, earns Tier 2 allocation, and receives staking rewards for 12 weeks starting at 65% milestone.</p>
-
-            <h4>Example 2 — The Creator (Tier 3 + clipping)</h4>
+            
+            <h4>Bonding Progress Tracking</h4>
             <ul>
-              <li>Invests $100+ in ROOT5</li>
-              <li>Makes up to 3 clips per week following Evan's scripts</li>
-              <li>Wins weekly clipping rewards multiple times</li>
-              <li>Leads or heavily participates in content pushes</li>
+              <li>Current: 48% bonded ($8.6K market cap)</li>
+              <li>Target 1: 65% by Week 2 for Tier 3</li>
+              <li>Target 2: 75% by Week 3 for staking & Tier 2</li>
+              <li>Goal: 100% completion for full migration</li>
             </ul>
-            <p>This user qualifies for Tier 3 when 80% bonding is reached, earns Tier 3 allocation, boosted staking, and competes in clipping starting at 50% milestone.</p>
-
-            <h4>Example 3 — The Networker (Tier 3 + referrals)</h4>
-            <ul>
-              <li>Invests $80–$100</li>
-              <li>Invites 15–20 real friends and contacts</li>
-              <li>Helps onboard them into Telegram, X, and Reddit raids</li>
-              <li>Participates in chip‑ins and keeps everyone active</li>
-            </ul>
-            <p>This user qualifies for Tier 3 when 80% bonding is reached and performs strongly in referral competitions starting at 50% milestone.</p>
           </details>
         </section>
 
@@ -949,7 +876,7 @@
             <div class="tag">Registration</div>
           </div>
 
-          <p class="note">Register now. Rewards unlock as bonding milestones (50%, 65%, 80%, 100%) are reached.</p>
+          <p class="note">Register now. Tier unlocks based on weeks + bonding milestones.</p>
 
           <!-- Existing form content -->
           <form class="form" id="bountyForm">
@@ -983,7 +910,7 @@
                 <input type="checkbox" id="comp_clipping" name="comp_clipping" style="margin-top:3px;" />
                 <span>
                   <strong>CLIPPING Campaign</strong><br>
-                  <span class="note">Make short videos win $ROOT5<br><em>Starts at 50% bonding milestone</em></span>
+                  <span class="note">Make short videos win $ROOT5<br><em>Weekly from Week 1</em></span>
                 </span>
               </label>
               
@@ -991,7 +918,7 @@
                 <input type="checkbox" id="comp_referrals" name="comp_referrals" style="margin-top:3px;" />
                 <span>
                   <strong>TG Referrals</strong><br>
-                  <span class="note">Bring Cool people win $ROOT5<br><em>Starts at 50% bonding milestone</em></span>
+                  <span class="note">Bring Cool people win $ROOT5<br><em>Weekly competitions</em></span>
                 </span>
               </label>
             </div>
@@ -1000,7 +927,7 @@
 
             <div>
               <label style="font-weight:700;margin-bottom:8px;display:block;">Your Socials - Participate And Get Rewards</label>
-              <p class="note" style="margin-bottom:12px;">Activity tracked starting at 50% bonding milestone</p>
+              <p class="note" style="margin-bottom:12px;">Activity tracked from registration</p>
             </div>
 
             <div>
@@ -1080,67 +1007,70 @@
         <!-- Quick reference -->
         <section class="panel" style="margin-top:12px" aria-labelledby="quickref-title">
           <div class="header">
-            <div class="title" id="quickref-title">Milestone Schedule</div>
-            <div class="tag">Unlock Triggers</div>
+            <div class="title" id="quickref-title">Hybrid Schedule</div>
+            <div class="tag">Time + Bonding</div>
           </div>
 
           <div class="side-card">
-            <div class="title">First Unlock</div>
-            <div class="date">Bonding reaches 50%</div>
-            <div class="muted">Tier 1 distributions begin. Competitions & clipping start.</div>
+            <div class="title">Tier 3 Check</div>
+            <div class="date">Week 2 + 65% bonding</div>
+            <div class="muted">Tier 3 base distribution if 65% bonding reached.</div>
           </div>
 
           <div class="side-card">
-            <div class="title">Staking Begins</div>
-            <div class="date">Bonding reaches 65%</div>
-            <div class="muted">12‑week staking program starts. Tier 2 distributions begin.</div>
+            <div class="title">Staking Unlock</div>
+            <div class="date">Week 3 + 75% bonding</div>
+            <div class="muted">8‑week staking begins if both conditions met.</div>
           </div>
 
           <div class="side-card">
-            <div class="title">Enhanced Rewards</div>
-            <div class="date">Bonding reaches 80%</div>
-            <div class="muted">Tier 3 distributions unlock. Bonus multipliers activate.</div>
+            <div class="title">Tier 1 Unlock</div>
+            <div class="date">Week 4 (regardless)</div>
+            <div class="muted">Tier 1 distribution at bounty midpoint.</div>
           </div>
 
           <div class="side-card">
-            <div class="title">Full DAO Transition</div>
-            <div class="date">Bonding reaches 100%</div>
-            <div class="muted">Governance activates. All rewards fully unlocked.</div>
+            <div class="title">Tier 2 Check</div>
+            <div class="date">75% bonding</div>
+            <div class="muted">Tier 2 distribution when bonding reaches 75%.</div>
           </div>
 
           <details style="margin-top:8px">
             <summary>See more ▾</summary>
-            <p class="note"><strong>Current status:</strong> 48% bonded ($8.6K market cap). 2% away from first unlock at 50%.</p>
-            <p class="note">All weekly activities (competitions, clipping, staking) begin at their respective milestone dates and run for their scheduled duration from that point.</p>
+            <p class="note"><strong>Current status:</strong> 48% bonded ($8.6K market cap), Week 1 of bounty.</p>
+            <p class="note"><strong>Next checks:</strong> Week 2 check for Tier 3 (needs 65% bonding), Week 3 for staking (needs 75% bonding).</p>
           </details>
         </section>
 
-        <!-- Legend -->
-        <section class="panel" style="margin-top:12px" aria-labelledby="legend-title">
+        <!-- Distribution Formula -->
+        <section class="panel" style="margin-top:12px" aria-labelledby="formula-title">
           <div class="header">
-            <div class="title" id="legend-title">Quick Guide</div>
-            <div class="tag">Key Points</div>
+            <div class="title" id="formula-title">Distribution Formula</div>
+            <div class="tag">Market Cap Scaling</div>
           </div>
 
-          <ul style="margin:0;padding-left:16px;color:var(--text-soft);font-size:13px;">
-            <li><strong>Current bonding:</strong> 48% ($8.6K market cap)</li>
-            <li><strong>Next unlock:</strong> 50% (Tier 1 + competitions + clipping)</li>
-            <li><strong>Staking begins:</strong> 65% bonding milestone</li>
-            <li><strong>Tier 2 distributions:</strong> Start at 65%</li>
-            <li><strong>Tier 3 distributions:</strong> Start at 80%</li>
-            <li><strong>Full unlock:</strong> 100% bonding completion</li>
-          </ul>
+          <div class="formula" style="font-size:12px;line-height:1.4;">
+            Base Distribution × √(Current MC / 8600)
+            <br><br>
+            Where:
+            <br>• Base Distribution = Your share at $8.6K MC
+            <br>• Current MC = Market cap at distribution time
+            <br>• √ = Square root (moderate scaling)
+            <br><br>
+            Example: If MC grows 4× to $34,400:
+            <br>Your reward doubles (√4 = 2)
+          </div>
 
           <details style="margin-top:8px">
             <summary>See more ▾</summary>
-            <p class="note">The faster we reach bonding milestones, the sooner rewards unlock. Your participation directly accelerates progress toward each milestone.</p>
+            <p class="note">Square root scaling prevents excessive inflation while rewarding market cap growth. Early participants benefit most from ecosystem success.</p>
           </details>
         </section>
       </aside>
     </div>
 
     <footer>
-      <div class="muted">All rewards unlock at bonding milestones: 50%, 65%, 80%, 100%. Current bonding progress: 48%. Distributions subject to verification and anti‑bot checks.</div>
+      <div class="muted">Distributions based on time (weeks) + bonding milestones. Current: 48% bonded, $8.6K market cap. All distributions subject to verification.</div>
     </footer>
   </div>
 
@@ -1333,30 +1263,31 @@
       }
     });
 
-    // Update progress bar based on current bonding (48%)
-    function updateProgressBar() {
-      const progressBar = document.querySelector('.progress-bar');
-      const currentBonding = 48; // Current bonding percentage
-      progressBar.style.width = `${currentBonding}%`;
+    // Update timeline indicator for current week
+    function updateTimeline() {
+      const currentWeek = 1; // Week 1 of bounty
+      const points = document.querySelectorAll('.timeline-point');
       
-      // Update milestone active states
-      const milestones = document.querySelectorAll('.milestone');
-      milestones.forEach(milestone => {
-        const text = milestone.textContent;
-        let percent = 0;
+      points.forEach((point, index) => {
+        const indicator = point.querySelector('.point-indicator');
+        const weekLabel = point.querySelector('.point-label').textContent;
+        const weekNumber = parseInt(weekLabel.replace('Week ', ''));
         
-        if (text === 'Start') percent = 0;
-        else if (text === '50%') percent = 50;
-        else if (text === '65%') percent = 65;
-        else if (text === '80%') percent = 80;
-        else if (text === '100%') percent = 100;
-        
-        milestone.classList.toggle('active', percent <= currentBonding);
+        if (weekNumber === currentWeek) {
+          indicator.classList.add('active');
+          indicator.style.background = 'var(--accent-primary)';
+        } else if (weekNumber < currentWeek) {
+          indicator.classList.add('active');
+          indicator.style.background = 'rgba(86,243,154,0.5)';
+        } else {
+          indicator.classList.remove('active');
+          indicator.style.background = '';
+        }
       });
     }
     
-    // Initialize progress bar
-    updateProgressBar();
+    // Initialize timeline
+    updateTimeline();
   </script>
 </body>
 </html>
