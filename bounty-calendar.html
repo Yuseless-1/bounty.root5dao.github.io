@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>ROOT5 DAO — Events & Milestones</title>
+  <title>ROOT5 DAO — Events & Milestones Calendar</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <style>
@@ -223,6 +223,158 @@
       color: var(--text-muted);
     }
 
+    /* TIMELINE STYLES */
+    .timeline-container {
+      margin: 20px 0;
+      position: relative;
+    }
+    
+    .timeline-track {
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 2px;
+      position: relative;
+    }
+    
+    .timeline-progress {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+      border-radius: 2px;
+      width: 48%;
+    }
+    
+    .timeline-points {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+      position: relative;
+    }
+    
+    .timeline-point {
+      text-align: center;
+      width: 100px;
+    }
+    
+    .point-indicator {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      margin: 0 auto 8px;
+      position: relative;
+      border: 2px solid transparent;
+    }
+    
+    .point-indicator.active {
+      background: var(--accent-primary);
+      border-color: rgba(86, 243, 154, 0.5);
+      box-shadow: 0 0 10px rgba(86, 243, 154, 0.5);
+    }
+    
+    .point-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+    
+    .point-subtitle {
+      font-size: 10px;
+      color: var(--text-soft);
+      margin-top: 2px;
+    }
+
+    /* BONDING MILESTONE STYLES */
+    .bonding-milestones {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    
+    .milestone-card {
+      background: linear-gradient(160deg, rgba(127, 93, 255, 0.08), rgba(86, 243, 154, 0.02));
+      border-radius: var(--radius-md);
+      padding: 12px;
+      border: 1px solid rgba(135, 142, 177, 0.2);
+    }
+    
+    .milestone-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    
+    .milestone-title {
+      font-weight: 700;
+      font-size: 13px;
+    }
+    
+    .milestone-status {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(86, 243, 154, 0.1);
+      color: var(--accent-primary);
+    }
+    
+    .milestone-status.pending {
+      background: rgba(255, 197, 91, 0.1);
+      color: #ffc75b;
+    }
+    
+    .milestone-details {
+      font-size: 12px;
+      color: var(--text-soft);
+      line-height: 1.4;
+    }
+    
+    .milestone-req {
+      display: flex;
+      gap: 12px;
+      margin-top: 8px;
+      font-size: 11px;
+    }
+    
+    .req-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-muted);
+    }
+
+    /* CURRENT STATS */
+    .current-stats {
+      display: flex;
+      gap: 16px;
+      margin: 12px 0;
+      flex-wrap: wrap;
+    }
+    
+    .stat-box {
+      background: rgba(86, 243, 154, 0.08);
+      border-radius: 8px;
+      padding: 10px 14px;
+      border: 1px solid rgba(86, 243, 154, 0.2);
+      min-width: 120px;
+      flex: 1;
+    }
+    
+    .stat-value {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--accent-primary);
+      line-height: 1.2;
+    }
+    
+    .stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* WEEKLY CALENDAR GRID */
     .calendar-grid {
       display: grid;
       grid-template-columns: repeat(7, minmax(0, 1fr));
@@ -240,10 +392,10 @@
     }
 
     .calendar-cell {
-      min-height: 40px;
+      min-height: 56px;
       border-radius: var(--radius-sm);
       border: 1px solid rgba(135, 142, 177, 0.28);
-      padding: 3px 4px;
+      padding: 4px 4px;
       position: relative;
       background: linear-gradient(150deg, #070910, #050608);
     }
@@ -251,7 +403,14 @@
     .calendar-day {
       font-size: 10px;
       color: var(--text-muted);
-      margin-bottom: 2px;
+      margin-bottom: 3px;
+      font-weight: 600;
+    }
+
+    .calendar-date {
+      font-size: 9px;
+      color: var(--text-muted);
+      opacity: 0.8;
     }
 
     .badge {
@@ -262,26 +421,37 @@
       margin-right: 2px;
       margin-bottom: 2px;
       border: 1px solid rgba(135, 142, 177, 0.6);
+      line-height: 1.2;
     }
 
     .badge-comp {
       border-color: rgba(86, 243, 154, 0.9);
       color: var(--accent-primary);
+      background: rgba(86, 243, 154, 0.1);
     }
 
     .badge-clip {
       border-color: rgba(127, 93, 255, 0.9);
       color: var(--accent-secondary);
+      background: rgba(127, 93, 255, 0.1);
     }
 
     .badge-stake {
       border-color: rgba(255, 255, 255, 0.65);
       color: #fefefe;
+      background: rgba(255, 255, 255, 0.1);
     }
 
     .badge-dist {
       border-color: rgba(255, 197, 91, 0.9);
       color: #ffc75b;
+      background: rgba(255, 197, 91, 0.1);
+    }
+
+    .badge-tier {
+      border-color: rgba(255, 77, 106, 0.9);
+      color: #ff4d6a;
+      background: rgba(255, 77, 106, 0.1);
     }
 
     .event-list {
@@ -340,6 +510,49 @@
     .legend-dot.clip { border-color: rgba(127, 93, 255, 0.9); }
     .legend-dot.stake { border-color: rgba(255, 255, 255, 0.8); }
     .legend-dot.dist { border-color: rgba(255, 197, 91, 0.9); }
+    .legend-dot.tier { border-color: rgba(255, 77, 106, 0.9); }
+
+    /* WEEK NAVIGATION */
+    .week-navigation {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(135, 142, 177, 0.2);
+    }
+    
+    .week-title {
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--accent-primary);
+    }
+    
+    .week-nav-buttons {
+      display: flex;
+      gap: 8px;
+    }
+    
+    .week-btn {
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(135, 142, 177, 0.3);
+      background: transparent;
+      color: var(--text-soft);
+      font-size: 11px;
+      cursor: pointer;
+    }
+    
+    .week-btn:hover {
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+    }
+    
+    .week-btn.active {
+      background: rgba(86, 243, 154, 0.1);
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+    }
   </style>
 </head>
 
@@ -354,78 +567,187 @@
             <span class="eyebrow-dot"></span>
             <span>Campaign timeline</span>
           </div>
-          <h1>ROOT5 DAO Events &amp; Milestones</h1>
+          <h1>ROOT5 DAO Events & Milestones Calendar</h1>
           <p class="subheadline">
-            A clear calendar for the bounty program: when competitions run, when staking pays out, and when final distributions land.
+            Interactive calendar for the 8-week bounty program with bonding milestones, competition schedules, and distribution dates.
           </p>
           <div class="pill-row">
-            <span class="pill"><strong>90‑day</strong> campaign</span>
-            <span class="pill"><strong>8 weeks</strong> of competitions &amp; clipping</span>
-            <span class="pill"><strong>12 weeks</strong> of staking</span>
+            <span class="pill"><strong>8‑week</strong> bounty program</span>
+            <span class="pill"><strong>Hybrid</strong> time + bonding</span>
+            <span class="pill">Current: <strong>48%</strong> bonded · $8.6K MC</span>
+            <span class="pill"><strong>Week 1</strong> active</span>
           </div>
         </header>
 
         <div class="layout">
-          <!-- LEFT COLUMN: MAIN TIMELINE / CALENDAR -->
+          <!-- LEFT COLUMN: CALENDAR & TIMELINE -->
           <div>
-            <!-- CAMPAIGN OVERVIEW -->
+            <!-- CURRENT STATUS -->
             <section class="panel">
               <div class="panel-header">
-                <div class="panel-title">Campaign overview</div>
-                <div class="panel-tag">Structure</div>
+                <div class="panel-title">Current Status & Timeline</div>
+                <div class="panel-tag">Week 1 · 48%</div>
               </div>
               <div class="panel-body">
-                <p>
-                  The ROOT5 DAO bounty program runs for approximately <span class="strong-highlight">90 days</span>.
-                  Competitions and clipping cover the first 8 weeks, staking runs for 12 weeks, and final distributions
-                  close out the campaign.
-                </p>
-                <ul class="event-list">
-                  <li><span class="strong-highlight">Days 1–56:</span> Competitions &amp; clipping campaign active</li>
-                  <li><span class="strong-highlight">Days 1–84:</span> Staking active</li>
-                  <li><span class="strong-highlight">Days 85–90:</span> Final distributions &amp; wrap‑up</li>
-                </ul>
+                <div class="current-stats">
+                  <div class="stat-box">
+                    <div class="stat-value">48%</div>
+                    <div class="stat-label">Bonding Progress</div>
+                  </div>
+                  <div class="stat-box">
+                    <div class="stat-value">$8.6K</div>
+                    <div class="stat-label">Market Cap</div>
+                  </div>
+                  <div class="stat-box">
+                    <div class="stat-value">Week 1</div>
+                    <div class="stat-label">Bounty Week</div>
+                  </div>
+                </div>
 
+                <div class="timeline-container">
+                  <div class="timeline-track">
+                    <div class="timeline-progress" style="width: 12.5%"></div>
+                  </div>
+                  <div class="timeline-points">
+                    <div class="timeline-point">
+                      <div class="point-indicator active"></div>
+                      <div class="point-label">Week 0</div>
+                      <div class="point-subtitle">Start</div>
+                    </div>
+                    <div class="timeline-point">
+                      <div class="point-indicator"></div>
+                      <div class="point-label">Week 2</div>
+                      <div class="point-subtitle">Tier 3 check</div>
+                    </div>
+                    <div class="timeline-point">
+                      <div class="point-indicator"></div>
+                      <div class="point-label">Week 3</div>
+                      <div class="point-subtitle">Staking check</div>
+                    </div>
+                    <div class="timeline-point">
+                      <div class="point-indicator"></div>
+                      <div class="point-label">Week 4</div>
+                      <div class="point-subtitle">Tier 1 unlocks</div>
+                    </div>
+                    <div class="timeline-point">
+                      <div class="point-indicator"></div>
+                      <div class="point-label">Week 8</div>
+                      <div class="point-subtitle">Bounty ends</div>
+                    </div>
+                  </div>
+                </div>
+
+                <p><strong>Hybrid system:</strong> Distributions combine time-based weeks with bonding percentage milestones.</p>
+                
                 <details>
                   <summary>See more ▾</summary>
-                  <p>
-                    Weekly cycles are used to keep things predictable: competitions and clipping follow a Monday → Sunday structure
-                    with distributions early in the week, while staking distributions are designed to fall later in the week.
-                  </p>
+                  <p>ROOT5 uses a hybrid time + bonding milestone system:</p>
                   <ul class="event-list">
-                    <li>Competition &amp; clipping weeks: Monday → Sunday</li>
-                    <li>Competition/clipping distributions: typically Mondays</li>
-                    <li>Staking distributions: typically Fridays</li>
+                    <li><strong>Time-based:</strong> Tier 1 unlocks Week 4, Tier 3 checks Week 2</li>
+                    <li><strong>Bonding-based:</strong> Tier 2 needs 75%, Tier 3 needs 65%</li>
+                    <li><strong>Combined:</strong> Staking needs Week 3 AND 75% bonding</li>
+                    <li><strong>Market cap scaling:</strong> Distributions scale with market cap growth</li>
                   </ul>
-                  <p class="small-note">
-                    Exact timestamps and transaction hashes will be posted in the ROOT5 Telegram and mirrored via the bot so
-                    participants can verify each distribution on‑chain.
-                  </p>
                 </details>
               </div>
             </section>
 
-            <!-- MASTER CALENDAR (MONTH 1) -->
+            <!-- BONDING MILESTONES -->
             <section class="panel">
               <div class="panel-header">
-                <div class="panel-title">Month 1 — Launch &amp; ramp‑up</div>
-                <div class="panel-tag">Weeks 1–4</div>
+                <div class="panel-title">Bonding Milestones & Unlocks</div>
+                <div class="panel-tag">Hybrid Triggers</div>
               </div>
               <div class="panel-body">
-                <p>
-                  Month 1 covers the first four weeks of the campaign: launch, onboarding, and the first wave of competitions,
-                  clipping, and staking.
-                </p>
+                <div class="bonding-milestones">
+                  <div class="milestone-card">
+                    <div class="milestone-header">
+                      <div class="milestone-title">Tier 3 Distribution</div>
+                      <div class="milestone-status pending">Pending</div>
+                    </div>
+                    <div class="milestone-details">Week 2 + 65% bonding required</div>
+                    <div class="milestone-req">
+                      <div class="req-item">📅 Week 2 (from Dec 22)</div>
+                      <div class="req-item">🎯 65% bonding needed</div>
+                    </div>
+                  </div>
+
+                  <div class="milestone-card">
+                    <div class="milestone-header">
+                      <div class="milestone-title">Staking Unlock</div>
+                      <div class="milestone-status pending">Pending</div>
+                    </div>
+                    <div class="milestone-details">Week 3 + 75% bonding required</div>
+                    <div class="milestone-req">
+                      <div class="req-item">📅 Week 3 (from Dec 29)</div>
+                      <div class="req-item">🎯 75% bonding needed</div>
+                    </div>
+                  </div>
+
+                  <div class="milestone-card">
+                    <div class="milestone-header">
+                      <div class="milestone-title">Tier 1 Distribution</div>
+                      <div class="milestone-status pending">Scheduled</div>
+                    </div>
+                    <div class="milestone-details">Week 4 (regardless of bonding)</div>
+                    <div class="milestone-req">
+                      <div class="req-item">📅 Week 4 (Jan 5-11)</div>
+                      <div class="req-item">✅ No bonding requirement</div>
+                    </div>
+                  </div>
+
+                  <div class="milestone-card">
+                    <div class="milestone-header">
+                      <div class="milestone-title">Tier 2 Distribution</div>
+                      <div class="milestone-status pending">Pending</div>
+                    </div>
+                    <div class="milestone-details">75% bonding milestone</div>
+                    <div class="milestone-req">
+                      <div class="req-item">🎯 75% bonding needed</div>
+                      <div class="req-item">⏰ Anytime after reached</div>
+                    </div>
+                  </div>
+                </div>
+
+                <details>
+                  <summary>See formula details ▾</summary>
+                  <div style="background: rgba(255,255,255,0.02); padding: 10px; border-radius: 8px; margin-top: 10px; font-family: monospace; font-size: 12px;">
+                    <strong>Tier 3:</strong> IF (Week ≥ 2) AND (Bonding ≥ 65%) THEN distribute<br>
+                    <strong>Tier 2:</strong> IF (Bonding ≥ 75%) THEN distribute<br>
+                    <strong>Tier 1:</strong> IF (Week ≥ 4) THEN distribute<br>
+                    <strong>Staking:</strong> IF (Week ≥ 3) AND (Bonding ≥ 75%) THEN unlock
+                  </div>
+                </details>
+              </div>
+            </section>
+
+            <!-- WEEKLY CALENDAR VIEW -->
+            <section class="panel">
+              <div class="panel-header">
+                <div class="panel-title">Weekly Calendar View</div>
+                <div class="panel-tag">Week 1: Dec 15-21</div>
+              </div>
+              <div class="panel-body">
+                <div class="week-navigation">
+                  <div class="week-title">Week 1: Dec 15-21, 2025</div>
+                  <div class="week-nav-buttons">
+                    <button class="week-btn active">Week 1</button>
+                    <button class="week-btn">Week 2</button>
+                    <button class="week-btn">Week 3</button>
+                    <button class="week-btn">Week 4</button>
+                  </div>
+                </div>
 
                 <div class="legend-row">
                   <div class="legend-item"><span class="legend-dot comp"></span> Competitions</div>
                   <div class="legend-item"><span class="legend-dot clip"></span> Clipping</div>
                   <div class="legend-item"><span class="legend-dot stake"></span> Staking</div>
                   <div class="legend-item"><span class="legend-dot dist"></span> Distributions</div>
+                  <div class="legend-item"><span class="legend-dot tier"></span> Tier Unlocks</div>
                 </div>
 
-                <!-- Simple symbolic calendar (not date‑accurate, just structured) -->
-                <div class="calendar-grid">
+                <!-- WEEK 1 CALENDAR -->
+                <div class="calendar-grid" id="week1-calendar">
                   <!-- Header row -->
                   <div class="calendar-header-cell">Mon</div>
                   <div class="calendar-header-cell">Tue</div>
@@ -435,310 +757,297 @@
                   <div class="calendar-header-cell">Sat</div>
                   <div class="calendar-header-cell">Sun</div>
 
-                  <!-- Week 1 -->
+                  <!-- Week 1 Days -->
                   <div class="calendar-cell">
                     <div class="calendar-day">Day 1</div>
-                    <span class="badge badge-comp">Launch comps</span>
-                    <span class="badge badge-clip">Launch clips</span>
+                    <div class="calendar-date">Dec 15</div>
+                    <span class="badge badge-dist">Marketing Start</span>
+                    <span class="badge badge-comp">Registration Open</span>
                   </div>
                   <div class="calendar-cell">
                     <div class="calendar-day">Day 2</div>
-                    <span class="badge badge-comp">X/Reddit raids</span>
+                    <div class="calendar-date">Dec 16</div>
+                    <span class="badge badge-comp">X/Reddit Prep</span>
                   </div>
                   <div class="calendar-cell">
                     <div class="calendar-day">Day 3</div>
-                    <span class="badge badge-stake">Staking open</span>
+                    <div class="calendar-date">Dec 17</div>
+                    <span class="badge badge-stake">Staking Prep</span>
                   </div>
                   <div class="calendar-cell">
                     <div class="calendar-day">Day 4</div>
-                    <span class="badge badge-comp">Comps active</span>
+                    <div class="calendar-date">Dec 18</div>
+                    <span class="badge badge-comp">Engagement Week</span>
                   </div>
                   <div class="calendar-cell">
                     <div class="calendar-day">Day 5</div>
-                    <span class="badge badge-clip">Clips week 1</span>
+                    <div class="calendar-date">Dec 19</div>
+                    <span class="badge badge-comp">Community Building</span>
                   </div>
                   <div class="calendar-cell">
                     <div class="calendar-day">Day 6</div>
-                    <span class="badge badge-comp">Weekend pushes</span>
+                    <div class="calendar-date">Dec 20</div>
+                    <span class="badge badge-comp">Weekend Push</span>
                   </div>
                   <div class="calendar-cell">
                     <div class="calendar-day">Day 7</div>
-                    <span class="badge badge-comp">Week 1 ends</span>
-                    <span class="badge badge-dist">Dist: Week 1</span>
-                  </div>
-
-                  <!-- Week 2 (symbolic) -->
-                  <div class="calendar-cell">
-                    <div class="calendar-day">Day 8</div>
-                    <span class="badge badge-comp">Week 2 comps</span>
-                  </div>
-                  <div class="calendar-cell">
-                    <div class="calendar-day">Day 9</div>
-                    <span class="badge badge-clip">Clips week 2</span>
-                  </div>
-                  <div class="calendar-cell">
-                    <div class="calendar-day">Day 10</div>
-                    <span class="badge badge-stake">Stake accrues</span>
-                  </div>
-                  <div class="calendar-cell">
-                    <div class="calendar-day">Day 11</div>
-                    <span class="badge badge-comp">Raids</span>
-                  </div>
-                  <div class="calendar-cell">
-                    <div class="calendar-day">Day 12</div>
-                    <span class="badge badge-comp">Referral tracking</span>
-                  </div>
-                  <div class="calendar-cell">
-                    <div class="calendar-day">Day 13</div>
-                    <span class="badge badge-clip">Clips deadline</span>
-                  </div>
-                  <div class="calendar-cell">
-                    <div class="calendar-day">Day 14</div>
-                    <span class="badge badge-dist">Dist: Week 2</span>
-                  </div>
-
-                  <!-- Week 3 (symbolic) -->
-                  <div class="calendar-cell">
-                    <div class="calendar-day">Day 15</div>
-                    <span class="badge badge-comp">Week 3 comps</span>
-                  </div>
-                  <div class="calendar-cell">
-                    <div class="calendar-day">Day 16</div>
-                    <span class="badge badge-clip">Clips week 3</span>
-                  </div>
-                  <div class="calendar-cell">
-                    <div class="calendar-day">Day 17</div>
-                    <span class="badge badge-stake">Stake accrues</span>
-                  </div>
-                  <div class="calendar-cell">
-                    <div class="calendar-day">Day 18</div>
-                    <span class="badge badge-comp">Raids</span>
-                  </div>
-                  <div class="calendar-cell">
-                    <div class="calendar-day">Day 19</div>
-                    <span class="badge badge-comp">Referral tracking</span>
-                  </div>
-                  <div class="calendar-cell">
-                    <div class="calendar-day">Day 20</div>
-                    <span class="badge badge-clip">Clips deadline</span>
-                  </div>
-                  <div class="calendar-cell">
-                    <div class="calendar-day">Day 21</div>
-                    <span class="badge badge-dist">Dist: Week 3</span>
-                  </div>
-
-                  <!-- Week 4 (symbolic) -->
-                  <div class="calendar-cell">
-                    <div class="calendar-day">Day 22</div>
-                    <span class="badge badge-comp">Week 4 comps</span>
-                  </div>
-                  <div class="calendar-cell">
-                    <div class="calendar-day">Day 23</div>
-                    <span class="badge badge-clip">Clips week 4</span>
-                  </div>
-                  <div class="calendar-cell">
-                    <div class="calendar-day">Day 24</div>
-                    <span class="badge badge-stake">Stake accrues</span>
-                  </div>
-                  <div class="calendar-cell">
-                    <div class="calendar-day">Day 25</div>
-                    <span class="badge badge-comp">Raids</span>
-                  </div>
-                  <div class="calendar-cell">
-                    <div class="calendar-day">Day 26</div>
-                    <span class="badge badge-comp">Referral tracking</span>
-                  </div>
-                  <div class="calendar-cell">
-                    <div class="calendar-day">Day 27</div>
-                    <span class="badge badge-clip">Clips deadline</span>
-                  </div>
-                  <div class="calendar-cell">
-                    <div class="calendar-day">Day 28</div>
-                    <span class="badge badge-dist">Dist: Week 4</span>
+                    <div class="calendar-date">Dec 21</div>
+                    <span class="badge badge-comp">Competitions Start</span>
+                    <span class="badge badge-clip">Clipping Instructions</span>
                   </div>
                 </div>
 
                 <details>
-                  <summary>See more ▾</summary>
-                  <p>
-                    Month 1 is primarily about onboarding, discovery, and establishing habits:
-                    joining channels, learning the flow, and proving you’re active.
-                  </p>
+                  <summary>See week details ▾</summary>
+                  <h4>Week 1 Key Events</h4>
                   <ul class="event-list">
-                    <li>Best time to solidify Tier 2 and begin moving toward Tier 3.</li>
-                    <li>Ideal window to get comfortable with clipping and raid schedules.</li>
-                    <li>Staking from Day 1 rewards early conviction.</li>
+                    <li><strong>Dec 15:</strong> Marketing campaign begins, registration opens</li>
+                    <li><strong>Dec 21:</strong> Competitions start (Reddit/X/Referrals)</li>
+                    <li><strong>Dec 21:</strong> First clipping campaign instructions sent</li>
+                    <li><strong>Daily:</strong> Bonding progress tracking begins</li>
                   </ul>
+                  <p class="small-note">Week 1 focuses on onboarding and setting up tracking systems.</p>
                 </details>
               </div>
             </section>
 
-            <!-- MASTER CALENDAR (MONTH 2 & 3) -->
+            <!-- DISTRIBUTION SCHEDULE -->
             <section class="panel">
               <div class="panel-header">
-                <div class="panel-title">Months 2 &amp; 3 — Peak activity &amp; wrap‑up</div>
-                <div class="panel-tag">Weeks 5–12</div>
+                <div class="panel-title">Distribution Schedule</div>
+                <div class="panel-tag">Weekly Rhythm</div>
               </div>
               <div class="panel-body">
-                <p>
-                  Month 2 continues competitions and clipping (Weeks 5–8). Month 3 is focused on staking and finalizing tiers
-                  (Weeks 9–12), followed by a final distribution window.
-                </p>
+                <p><strong>Weekly payout structure:</strong></p>
                 <ul class="event-list">
-                  <li><span class="strong-highlight">Weeks 5–8:</span> Final phase of competitions &amp; clipping</li>
-                  <li><span class="strong-highlight">Weeks 9–12:</span> Staking only, no new competitions or clips</li>
-                  <li><span class="strong-highlight">Week 13:</span> Final distributions and leaderboard publish</li>
+                  <li><span class="strong-highlight">Sundays:</span> Competition distributions (Reddit/X/Referrals)</li>
+                  <li><span class="strong-highlight">Tuesdays:</span> Clipping base payments (for chosen videos)</li>
+                  <li><span class="strong-highlight">Fridays:</span> Staking distributions (if 75% bonding reached)</li>
+                  <li><span class="strong-highlight">Saturdays:</span> Clipping bonus payments</li>
+                  <li><span class="strong-highlight">Milestone-based:</span> Tier distributions when conditions met</li>
                 </ul>
 
+                <h4 style="margin-top: 16px; font-size: 13px;">Clipping Campaign Flow:</h4>
+                <div style="background: rgba(127, 93, 255, 0.05); padding: 10px; border-radius: 8px; margin-top: 8px; font-size: 12px;">
+                  <div><strong>Sunday:</strong> Instructions sent → Videos assigned</div>
+                  <div><strong>Monday-Tuesday:</strong> Create/edit videos → Submit by Tuesday</div>
+                  <div><strong>Tuesday:</strong> Base payment for chosen videos</div>
+                  <div><strong>Wednesday-Friday:</strong> Videos published/promoted</div>
+                  <div><strong>Saturday:</strong> Bonus payments based on performance</div>
+                </div>
+
                 <details>
-                  <summary>See more ▾</summary>
-                  <h4>Month 2 (Weeks 5–8)</h4>
-                  <ul>
-                    <li>Same weekly cycle as Month 1: Monday → Sunday.</li>
-                    <li>Competitions and clipping end on Day 56 (end of Week 8).</li>
-                    <li>Final competition and clipping distributions occur at the start of Week 9.</li>
-                  </ul>
-
-                  <h4>Month 3 (Weeks 9–12)</h4>
-                  <ul>
-                    <li>No new competitions or clipping rewards.</li>
-                    <li>Staking continues and pays out weekly (typically Fridays).</li>
-                    <li>Tier adjustments may be finalized based on overall contribution.</li>
-                  </ul>
-
-                  <h4>Final week (Week 13)</h4>
-                  <ul>
-                    <li>Final staking distribution.</li>
-                    <li>Tier 1–3 distributions are executed.</li>
-                    <li>Competition and clipping leaderboards are published.</li>
-                    <li>Post‑mortem and roadmap discussion for next phase.</li>
-                  </ul>
+                  <summary>See payment examples ▾</summary>
+                  <h4>Market Cap Scaling Formula:</h4>
+                  <div style="font-family: monospace; font-size: 12px; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 6px;">
+                    Your Reward = Base Reward × √(Current MC / 8600)
+                  </div>
+                  <p class="small-note">Example: If market cap grows to $34,400 (4×), your reward doubles (√4 = 2)</p>
                 </details>
               </div>
             </section>
           </div>
 
-          <!-- RIGHT COLUMN: QUICK REF / KEY DATES -->
+          <!-- RIGHT COLUMN: QUICK REFERENCE & KEY DATES -->
           <div>
-            <!-- QUICK REFERENCE -->
+            <!-- KEY DATES -->
             <section class="panel">
               <div class="panel-header">
-                <div class="panel-title">Quick reference</div>
-                <div class="panel-tag">At a glance</div>
+                <div class="panel-title">Key Dates & Deadlines</div>
+                <div class="panel-tag">Critical Path</div>
               </div>
               <div class="panel-body">
                 <div class="side-event-card">
-                  <div class="side-event-title">Campaign launch</div>
-                  <div class="side-event-date">Day 1</div>
-                  <p>
-                    Bounty page goes live, registrations open, competitions and clipping start, staking opens.
-                  </p>
+                  <div class="side-event-title">Campaign Launch</div>
+                  <div class="side-event-date">Dec 15, 2025 (Monday)</div>
+                  <p>Marketing starts, registration opens, bonding tracking begins.</p>
                 </div>
 
                 <div class="side-event-card">
-                  <div class="side-event-title">First distribution</div>
-                  <div class="side-event-date">Day 7 (end of Week 1)</div>
-                  <p>
-                    First weekly distribution covering competitions, clipping, and staking where applicable.
-                  </p>
+                  <div class="side-event-title">Competitions Start</div>
+                  <div class="side-event-date">Dec 21, 2025 (Sunday)</div>
+                  <p>Reddit/X/Referral competitions begin. First Sunday payout cycle starts.</p>
                 </div>
 
                 <div class="side-event-card">
-                  <div class="side-event-title">Mid‑campaign checkpoint</div>
-                  <div class="side-event-date">~Day 30</div>
-                  <p>
-                    Internal review, tier checks, and communication of any adjustments or focus areas for the second half.
-                  </p>
+                  <div class="side-event-title">Logging & Tiers Start</div>
+                  <div class="side-event-date">Dec 22, 2025 (Monday)</div>
+                  <p>Official tier logging begins. Week 2 of campaign starts.</p>
                 </div>
 
                 <div class="side-event-card">
-                  <div class="side-event-title">Competitions &amp; clipping end</div>
-                  <div class="side-event-date">Day 56 (end of Week 8)</div>
-                  <p>
-                    Last week where new competition activities and clipping submissions are counted for rewards.
-                  </p>
+                  <div class="side-event-title">Tier 3 Checkpoint</div>
+                  <div class="side-event-date">Week 2 (Dec 22-28)</div>
+                  <p>Tier 3 distribution if 65% bonding reached. First milestone check.</p>
                 </div>
 
                 <div class="side-event-card">
-                  <div class="side-event-title">Staking program ends</div>
-                  <div class="side-event-date">Day 84 (end of Week 12)</div>
-                  <p>
-                    Last staking week. Final staking distribution occurs shortly after.
-                  </p>
+                  <div class="side-event-title">Staking Unlock Check</div>
+                  <div class="side-event-date">Week 3 (Dec 29-Jan 4)</div>
+                  <p>Staking program begins if Week 3 AND 75% bonding reached.</p>
                 </div>
 
                 <div class="side-event-card">
-                  <div class="side-event-title">Final distributions &amp; leaderboard</div>
-                  <div class="side-event-date">Days 85–90 (Week 13)</div>
-                  <p>
-                    Tier distributions, final staking payouts, and publication of competition and clipping leaderboards.
-                  </p>
+                  <div class="side-event-title">Tier 1 Distribution</div>
+                  <div class="side-event-date">Week 4 (Jan 5-11)</div>
+                  <p>Tier 1 distribution regardless of bonding percentage.</p>
+                </div>
+
+                <div class="side-event-card">
+                  <div class="side-event-title">Campaign Ends</div>
+                  <div class="side-event-date">Week 8 (Feb 2-8)</div>
+                  <p>Final distributions, leaderboard publication, and wrap-up.</p>
                 </div>
 
                 <details>
-                  <summary>See more ▾</summary>
-                  <h4>Weekly rhythm</h4>
-                  <ul>
-                    <li><span class="strong-highlight">Monday:</span> New week starts; previous week’s comps/clips distributed.</li>
-                    <li><span class="strong-highlight">Midweek:</span> Raids, discussion pushes, creator output.</li>
-                    <li><span class="strong-highlight">Weekend:</span> Final engagement and submissions for that week.</li>
-                    <li><span class="strong-highlight">Friday (staking):</span> Staking distributions (for Weeks 1–12).</li>
-                  </ul>
-
-                  <h4>Best practice</h4>
-                  <ul>
-                    <li>Set personal reminders for raid times and clipping deadlines.</li>
-                    <li>Track your own contributions to verify against bot tracking.</li>
-                    <li>Check Telegram regularly around distribution days for updates and links.</li>
+                  <summary>See weekly schedule ▾</summary>
+                  <h4>Weekly Recurring Events:</h4>
+                  <ul class="event-list">
+                    <li><strong>Every Sunday:</strong> Competition distributions + New clipping instructions</li>
+                    <li><strong>Every Tuesday:</strong> Clipping base payments (deadline for submissions)</li>
+                    <li><strong>Every Friday:</strong> Staking distributions (if unlocked)</li>
+                    <li><strong>Every Saturday:</strong> Clipping bonus payments</li>
+                    <li><strong>Daily:</strong> Bonding progress tracking</li>
                   </ul>
                 </details>
               </div>
             </section>
 
-            <!-- COLORS / LEGEND / NOTES -->
+            <!-- BONDING PROGRESS -->
             <section class="panel">
               <div class="panel-header">
-                <div class="panel-title">Legend &amp; notes</div>
+                <div class="panel-title">Bonding Progress Targets</div>
+                <div class="panel-tag">Current: 48%</div>
+              </div>
+              <div class="panel-body">
+                <div style="margin-bottom: 12px;">
+                  <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px;">
+                    <span>0%</span>
+                    <span>Current: 48%</span>
+                    <span>100%</span>
+                  </div>
+                  <div style="height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden;">
+                    <div style="width: 48%; height: 100%; background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));"></div>
+                  </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px;">
+                  <div style="background: rgba(86, 243, 154, 0.05); padding: 8px; border-radius: 6px; border-left: 3px solid var(--accent-primary);">
+                    <div style="font-size: 12px; font-weight: 600;">Tier 3</div>
+                    <div style="font-size: 10px; color: var(--text-muted);">Needs: 65%</div>
+                  </div>
+                  <div style="background: rgba(127, 93, 255, 0.05); padding: 8px; border-radius: 6px; border-left: 3px solid var(--accent-secondary);">
+                    <div style="font-size: 12px; font-weight: 600;">Tier 2 & Staking</div>
+                    <div style="font-size: 10px; color: var(--text-muted);">Needs: 75%</div>
+                  </div>
+                </div>
+
+                <p class="small-note" style="margin-top: 12px;">
+                  <strong>Next target:</strong> Reach 65% by Week 2 (Dec 28) for Tier 3 distribution.
+                </p>
+
+                <details>
+                  <summary>See bonding details ▾</summary>
+                  <p>Bonding percentage represents the portion of ROOT5 tokens committed to the migration program. Higher bonding means more community commitment.</p>
+                  <ul class="event-list">
+                    <li><strong>48% current:</strong> $8.6K market cap, Week 1 active</li>
+                    <li><strong>65% target:</strong> Needed for Tier 3 Week 2 distribution</li>
+                    <li><strong>75% target:</strong> Needed for Tier 2 & Staking unlock</li>
+                    <li><strong>100% goal:</strong> Full migration completion</li>
+                  </ul>
+                </details>
+              </div>
+            </section>
+
+            <!-- WEEKLY ACTIVITIES -->
+            <section class="panel">
+              <div class="panel-header">
+                <div class="panel-title">Weekly Activities</div>
+                <div class="panel-tag">What to do when</div>
+              </div>
+              <div class="panel-body">
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: var(--accent-primary); margin-bottom: 4px;">Competitions (Reddit/X/Referrals)</div>
+                  <div style="font-size: 11px; color: var(--text-soft);">Weekly cycle: Monday-Sunday → Paid Sundays</div>
+                </div>
+
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: var(--accent-secondary); margin-bottom: 4px;">Clipping Campaign</div>
+                  <div style="font-size: 11px; color: var(--text-soft);">Instructions Sunday → Submit Tuesday → Base paid Tuesday → Bonus Saturday</div>
+                </div>
+
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: var(--text-main); margin-bottom: 4px;">Staking</div>
+                  <div style="font-size: 11px; color: var(--text-soft);">Unlocks Week 3 + 75% bonding → 8-week program → Paid Fridays</div>
+                </div>
+
+                <div style="margin-bottom: 12px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #ffc75b; margin-bottom: 4px;">Tier Activities</div>
+                  <div style="font-size: 11px; color: var(--text-soft);">
+                    Tier 1: Basic participation<br>
+                    Tier 2: $60+ investment + activity<br>
+                    Tier 3: Leadership + referrals
+                  </div>
+                </div>
+
+                <details>
+                  <summary>See best practices ▾</summary>
+                  <h4>Maximize Your Rewards:</h4>
+                  <ul class="event-list">
+                    <li>Register before Dec 22 for full Week 1 tracking</li>
+                    <li>Submit clipping videos by Tuesday deadlines</li>
+                    <li>Participate in weekly competitions (Monday-Sunday)</li>
+                    <li>Track bonding progress in Telegram</li>
+                    <li>Verify distributions via on-chain transactions</li>
+                  </ul>
+                  <p class="small-note">All distributions announced in Telegram with transaction links for verification.</p>
+                </details>
+              </div>
+            </section>
+
+            <!-- LEGEND & NOTES -->
+            <section class="panel">
+              <div class="panel-header">
+                <div class="panel-title">Legend & Notes</div>
                 <div class="panel-tag">Guide</div>
               </div>
               <div class="panel-body">
-                <p>
-                  Colors and tags are shared between this calendar and the bounty program page to keep everything mentally
-                  consistent.
-                </p>
-
                 <div class="legend-row">
                   <div class="legend-item">
                     <span class="legend-dot comp"></span> Competitions (Reddit/X/Referrals)
                   </div>
                   <div class="legend-item">
-                    <span class="legend-dot clip"></span> Clipping campaign (videos)
+                    <span class="legend-dot clip"></span> Clipping campaign
                   </div>
                   <div class="legend-item">
-                    <span class="legend-dot stake"></span> Staking (Tier 2 &amp; 3)
+                    <span class="legend-dot stake"></span> Staking
                   </div>
                   <div class="legend-item">
                     <span class="legend-dot dist"></span> Distributions
                   </div>
+                  <div class="legend-item">
+                    <span class="legend-dot tier"></span> Tier Unlocks
+                  </div>
                 </div>
 
+                <p class="small-note" style="margin-top: 12px;">
+                  <strong>Hybrid System:</strong> Time (weeks) + Bonding (%) milestones determine unlocks.
+                </p>
+
                 <details>
-                  <summary>See more ▾</summary>
-                  <h4>Aligning with the bounty page</h4>
-                  <p>
-                    This calendar is meant to be read side‑by‑side with the main bounty program page. That page explains how
-                    tiers, competitions, clipping, and staking work; this page tells you when each part is active.
-                  </p>
-
-                  <h4>Projected vs. actual</h4>
-                  <ul>
-                    <li>This calendar is a projected schedule.</li>
-                    <li>Exact timestamps and on‑chain links will always be announced in Telegram.</li>
-                    <li>If the DAO votes to adjust timing, this calendar can shift slightly.</li>
+                  <summary>See important notes ▾</summary>
+                  <h4>Key Points:</h4>
+                  <ul class="event-list">
+                    <li>This calendar shows projected schedule based on current info</li>
+                    <li>Exact timestamps announced in Telegram with on-chain links</li>
+                    <li>Bonding progress updates daily in community channels</li>
+                    <li>Market cap scaling applies to all distributions</li>
+                    <li>All dates based on campaign start: Dec 15, 2025</li>
                   </ul>
-
+                  
+                  <h4>Verification:</h4>
                   <p class="small-note">
-                    Always treat on‑chain transactions and official announcements as the ultimate source of truth.
+                    Always verify distributions via on-chain transactions. Links posted in Telegram for every payout.
                   </p>
                 </details>
               </div>
@@ -749,5 +1058,71 @@
       </div>
     </main>
   </div>
+
+  <script>
+    // Week navigation functionality
+    document.querySelectorAll('.week-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        // Remove active class from all buttons
+        document.querySelectorAll('.week-btn').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        
+        // Add active class to clicked button
+        this.classList.add('active');
+        
+        // Update week title (simplified - in real implementation would show different weeks)
+        const weekTitle = document.querySelector('.week-title');
+        const weekTag = document.querySelector('.panel-tag');
+        
+        const weeks = [
+          { num: 1, dates: 'Dec 15-21', title: 'Week 1: Dec 15-21, 2025' },
+          { num: 2, dates: 'Dec 22-28', title: 'Week 2: Dec 22-28, 2025' },
+          { num: 3, dates: 'Dec 29-Jan 4', title: 'Week 3: Dec 29-Jan 4, 2026' },
+          { num: 4, dates: 'Jan 5-11', title: 'Week 4: Jan 5-11, 2026' }
+        ];
+        
+        const weekIndex = Array.from(document.querySelectorAll('.week-btn')).indexOf(this);
+        if (weekIndex >= 0 && weekIndex < weeks.length) {
+          weekTitle.textContent = weeks[weekIndex].title;
+          weekTag.textContent = `Week ${weeks[weekIndex].num}: ${weeks[weekIndex].dates}`;
+        }
+      });
+    });
+
+    // Update timeline indicator based on current week
+    function updateTimeline() {
+      const currentWeek = 1; // Week 1 is active
+      const points = document.querySelectorAll('.timeline-point');
+      
+      points.forEach((point, index) => {
+        const indicator = point.querySelector('.point-indicator');
+        const weekLabel = point.querySelector('.point-label').textContent;
+        const weekNumber = parseInt(weekLabel.replace('Week ', '')) || 0;
+        
+        if (weekNumber === currentWeek) {
+          indicator.classList.add('active');
+          indicator.style.background = 'var(--accent-primary)';
+        } else if (weekNumber < currentWeek) {
+          indicator.classList.add('active');
+          indicator.style.background = 'rgba(86,243,154,0.5)';
+        } else {
+          indicator.classList.remove('active');
+          indicator.style.background = '';
+        }
+      });
+    }
+
+    // Initialize
+    updateTimeline();
+    
+    // Add current date display
+    const currentDate = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const dateString = currentDate.toLocaleDateString('en-US', options);
+    
+    // You could display this somewhere if needed
+    console.log('Calendar loaded for ROOT5 DAO - Current date:', dateString);
+  </script>
 </body>
 </html>
