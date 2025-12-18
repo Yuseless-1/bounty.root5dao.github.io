@@ -1,12 +1,254 @@
-<script src="https://cdn.depay.com/web3-payments@12/dist/umd/index.prod.js"></script>
-<button onclick="testPayment()">Test $1 Payment</button>
-<script>
-function testPayment() {
-    DePayWeb3Payments.makePayment({
-        integration: '411019b3-e374-45cd-9cb9-20ba0a68035d',
-        amount: 1,
-        currency: 'USD',
-        title: 'Test Payment'
-    });
-}
-</script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DePay Widget Test</title>
+    <!-- DePay Widgets CDN as per documentation -->
+    <script defer async src="https://integrate.depay.com/widgets/v13.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        /* Widget container - make it clearly visible */
+        #depayWidgetContainer {
+            min-height: 300px;
+            border: 2px dashed #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            background: #f9f9f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.3s;
+        }
+        
+        #depayWidgetContainer:hover {
+            border-color: #667eea;
+        }
+        
+        .loading-text {
+            color: #999;
+            font-style: italic;
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            background: #f0f0f0;
+            font-family: monospace;
+            font-size: 14px;
+            text-align: left;
+        }
+        
+        .instructions {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .instructions code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 13px;
+        }
+        
+        .error {
+            color: #e74c3c;
+            background: #fee;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        footer {
+            margin-top: 40px;
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DePay Widget Test</h1>
+        <p class="subtitle">Testing widget integration with your ID: <code>411019b3-e374-45cd-9cb9-20ba0a68035d</code></p>
+        
+        <div id="depayWidgetContainer">
+            <div class="loading-text">Loading DePay Widget...</div>
+        </div>
+        
+        <div id="errorMessage" class="error"></div>
+        
+        <div class="status" id="status">
+            <strong>Status:</strong><br>
+            • Waiting for DePay script to load...<br>
+            • Integration ID: 411019b3-e374-45cd-9cb9-20ba0a68035d<br>
+            • Container: #depayWidgetContainer
+        </div>
+        
+        <div class="instructions">
+            <strong>Test Instructions:</strong><br>
+            1. Wait for widget to load (should appear above)<br>
+            2. Try selecting amount and payment method<br>
+            3. For testing, use <code>dev mode</code> or small test amounts<br>
+            4. Check browser console (F12) for any errors
+        </div>
+    </div>
+    
+    <footer>
+        Root5DAO Widget Test | If widget doesn't load, check browser console for errors
+    </footer>
+
+    <script>
+        // Configuration
+        const DEPAY_INTEGRATION_ID = '411019b3-e374-45cd-9cb9-20ba0a68035d';
+        let widgetLoaded = false;
+        
+        // Update status display
+        function updateStatus(message, isError = false) {
+            const statusDiv = document.getElementById('status');
+            const errorDiv = document.getElementById('errorMessage');
+            
+            const timestamp = new Date().toLocaleTimeString();
+            const statusLine = `• [${timestamp}] ${message}`;
+            
+            statusDiv.innerHTML = `<strong>Status:</strong><br>${statusLine}<br>• Integration ID: ${DEPAY_INTEGRATION_ID}<br>• Container: #depayWidgetContainer`;
+            
+            if (isError) {
+                errorDiv.textContent = `Error: ${message}`;
+                errorDiv.style.display = 'block';
+            }
+            
+            console.log(`DePay Test: ${message}`);
+        }
+        
+        // Initialize DePay widget when script loads
+        function initDePayWidget() {
+            if (widgetLoaded) return;
+            
+            updateStatus('Attempting to initialize DePay widget...');
+            
+            try {
+                // Check if DePayWidgets is available
+                if (typeof DePayWidgets === 'undefined') {
+                    updateStatus('DePayWidgets object not found. CDN may have failed to load.', true);
+                    return;
+                }
+                
+                updateStatus('DePayWidgets object found, initializing Payment widget...');
+                
+                // Initialize widget exactly as per DePay documentation
+                DePayWidgets.Payment({
+                    integration: DEPAY_INTEGRATION_ID,
+                    container: '#depayWidgetContainer',
+                    amount: 10, // Default amount
+                    currency: 'USD',
+                    metadata: {
+                        test: true,
+                        source: 'root5dao_test_page'
+                    }
+                });
+                
+                widgetLoaded = true;
+                updateStatus('Widget initialized successfully!');
+                
+            } catch (error) {
+                updateStatus(`Failed to initialize: ${error.message}`, true);
+                console.error('DePay initialization error:', error);
+            }
+        }
+        
+        // Check for DePayWidgets availability
+        function checkDePayLoaded() {
+            if (typeof DePayWidgets !== 'undefined') {
+                initDePayWidget();
+                return true;
+            }
+            return false;
+        }
+        
+        // Main initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStatus('Page loaded, waiting for DePay script...');
+            
+            // Try immediately
+            if (checkDePayLoaded()) {
+                return;
+            }
+            
+            // If not loaded yet, check every 500ms for 10 seconds
+            let attempts = 0;
+            const maxAttempts = 20; // 10 seconds total
+            
+            const interval = setInterval(() => {
+                attempts++;
+                
+                if (checkDePayLoaded()) {
+                    clearInterval(interval);
+                    updateStatus('DePay script loaded via interval check');
+                } else if (attempts >= maxAttempts) {
+                    clearInterval(interval);
+                    updateStatus('DePay script failed to load after 10 seconds', true);
+                    document.querySelector('.loading-text').innerHTML = 
+                        '❌ Failed to load DePay widget.<br>Check:<br>1. Browser console (F12)<br>2. Integration ID<br>3. Network connection';
+                } else {
+                    updateStatus(`Waiting for DePay script... (attempt ${attempts}/${maxAttempts})`);
+                }
+            }, 500);
+            
+            // Also try on window load
+            window.addEventListener('load', checkDePayLoaded);
+        });
+        
+        // Global error handler for debugging
+        window.addEventListener('error', function(e) {
+            updateStatus(`Global error: ${e.message}`, true);
+        });
+    </script>
+</body>
+</html>
