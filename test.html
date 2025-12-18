@@ -10,20 +10,11 @@
     
     <script>
         // Wait 3 seconds to ensure script loads
-        setTimeout(function() {
-            console.log('DePayWidgets available?', typeof DePayWidgets);
-            
-            if (typeof DePayWidgets !== 'undefined') {
-                console.log('Creating widget WITHOUT container...');
-                
-                // Try WITHOUT any container - let it auto-create
-                DePayWidgets.Payment({
-                    integration: '411019b3-e374-45cd-9cb9-20ba0a68035d',
-                });
-                
-                console.log('Widget creation attempted');
-            }
-        }, 3000);
+        import DePayWidgets from "@depay/widgets"
+
+DePayWidgets.Payment({
+  integration: '411019b3-e374-45cd-9cb9-20ba0a68035d'
+});
     </script>
 </body>
 </html>
