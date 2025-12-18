@@ -1,0 +1,12 @@
+<script src="https://cdn.depay.com/web3-payments@12/dist/umd/index.prod.js"></script>
+<button onclick="testPayment()">Test $1 Payment</button>
+<script>
+function testPayment() {
+    DePayWeb3Payments.makePayment({
+        integration: '411019b3-e374-45cd-9cb9-20ba0a68035d',
+        amount: 1,
+        currency: 'USD',
+        title: 'Test Payment'
+    });
+}
+</script>
