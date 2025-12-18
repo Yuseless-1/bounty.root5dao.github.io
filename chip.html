@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Root5DAO - Chip In & Support</title>
+    <!-- Primary style to match bounty.root5dao.com - UPDATE THESE COLORS -->
+    <style>
+        :root {
+            --primary-color: #3498db;       /* Main brand blue */
+            --secondary-color: #2ecc71;     /* Green for progress */
+            --dark-color: #2c3e50;          /* Dark text */
+            --light-color: #ecf0f1;         /* Light background */
+            --gray-color: #95a5a6;          /* Gray text */
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background: #f9f9f9;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-bottom: 2rem;
+        }
+        h1 { color: var(--primary-color); margin-bottom: 0.5rem; }
+        .subtitle { color: var(--gray-color); font-size: 1.1rem; }
+        
+        /* Campaign Grid */
+        .campaigns-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        .campaign-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.8rem;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .campaign-card:hover { transform: translateY(-5px); }
+        .campaign-title {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+            border-bottom: 2px solid var(--light-color);
+            padding-bottom: 0.8rem;
+        }
+        .campaign-description {
+            color: var(--gray-color);
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+        
+        /* Progress Section */
+        .progress-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.2rem;
+            margin: 1.5rem 0;
+        }
+        .goal-display {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            font-size: 0.95rem;
+        }
+        .sol-goal { font-weight: bold; color: var(--primary-color); }
+        .usd-goal { color: var(--gray-color); }
+        .progress-container {
+            height: 12px;
+            background: #e0e0e0;
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            width: 0%;
+            transition: width 1s ease-in-out;
+            border-radius: 6px;
+        }
+        .raised-info {
+            text-align: right;
+            font-size: 0.9rem;
+            color: var(--gray-color);
+        }
+        
+        /* Amount Selection */
+        .amount-section { margin: 1.5rem 0; }
+        .suggested-amounts {
+            display: flex;
+            gap: 0.8rem;
+            margin: 1rem 0;
+        }
+        .amount-btn {
+            flex: 1;
+            padding: 0.9rem;
+            border: 2px solid var(--primary-color);
+            background: white;
+            color: var(--primary-color);
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .amount-btn:hover, .amount-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        .custom-amount {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+        #customAmount {
+            flex-grow: 1;
+            padding: 0.9rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        /* Donate Button */
+        .donate-btn {
+            display: block;
+            width: 100%;
+            padding: 1.1rem;
+            background: linear-gradient(90deg, var(--primary-color), #2980b9);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            transition: opacity 0.2s;
+        }
+        .donate-btn:hover { opacity: 0.9; }
+        
+        /* Price Ticker */
+        .price-ticker {
+            text-align: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 10px;
+            margin: 2rem auto;
+            max-width: 300px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            font-size: 0.95rem;
+        }
+        .sol-price { font-weight: bold; color: var(--secondary-color); }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--gray-color);
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .campaigns-container { grid-template-columns: 1fr; }
+            .suggested-amounts { flex-wrap: wrap; }
+            .amount-btn { min-width: calc(33% - 0.8rem); }
+        }
+    </style>
+    <!-- DePay Widget SDK - LOAD THIS FIRST -->
+    <script src="https://cdn.depay.com/web3-payments@12/dist/umd/index.prod.js"></script>
+</head>
+<body>
+    <header>
+        <h1>🚀 Root5DAO Crowdfunding</h1>
+        <p class="subtitle">Support our marketing campaigns. Every contribution accelerates our growth.</p>
+        
+        <!-- Live SOL Price Ticker -->
+        <div class="price-ticker">
+            Current SOL Price: <span class="sol-price" id="solPrice">Loading...</span> USD
+            <br><small>Updates every 60 seconds</small>
+        </div>
+    </header>
+
+    <main>
+        <div class="campaigns-container">
+            
+            <!-- CAMPAIGN 1 -->
+            <div class="campaign-card" id="campaign1">
+                <h2 class="campaign-title">Campaign 1: Community Awareness Blitz</h2>
+                <p class="campaign-description">A targeted campaign across social media and crypto forums to increase visibility and attract new builders to the ecosystem.</p>
+                
+                <div class="progress-section">
+                    <div class="goal-display">
+                        <span class="sol-goal">Goal: <span id="goalSol1">10</span> SOL</span>
+                        <span class="usd-goal">≈ $<span id="goalUsd1">1500</span> USD</span>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar1"></div>
+                    </div>
+                    <div class="raised-info">
+                        Raised: <span id="raisedSol1">0</span> SOL ($<span id="raisedUsd1">0</span> USD)
+                    </div>
+                </div>
+                
+                <div class="amount-section">
+                    <p><strong>Suggested amount (USD):</strong></p>
+                    <div class="suggested-amounts">
+                        <button class="amount-btn" data-amount="10" data-campaign="1">$10</button>
+                        <button class="amount-btn" data-amount="25" data-campaign="1">$25</button>
+                        <button class="amount-btn" data-amount="50" data-campaign="1">$50</button>
+                    </div>
+                    
+                    <div class="custom-amount">
+                        <input type="number" id="customAmount1" placeholder="Other amount (USD)" min="1" step="0.01" value="10">
+                    </div>
+                </div>
+                
+                <button class="donate-btn" data-campaign="1" id="donateBtn1">
+                    💎 Chip In to Campaign 1
+                </button>
+            </div>
+            
+            <!-- CAMPAIGN 2 -->
+            <div class="campaign-card" id="campaign2">
+                <h2 class="campaign-title">Campaign 2: Content Creator Partnerships</h2>
+                <p class="campaign-description">Funding for collaborations with key opinion leaders and technical educators in the Web3 space to produce high-quality tutorials and reviews.</p>
+                
+                <div class="progress-section">
+                    <div class="goal-display">
+                        <span class="sol-goal">Goal: <span id="goalSol2">15</span> SOL</span>
+                        <span class="usd-goal">≈ $<span id="goalUsd2">2250</span> USD</span>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar2"></div>
+                    </div>
+                    <div class="raised-info">
+                        Raised: <span id="raisedSol2">0</span> SOL ($<span id="raisedUsd2">0</span> USD)
+                    </div>
+                </div>
+                
+                <div class="amount-section">
+                    <p><strong>Suggested amount (USD):</strong></p>
+                    <div class="suggested-amounts">
+                        <button class="amount-btn" data-amount="10" data-campaign="2">$10</button>
+                        <button class="amount-btn" data-amount="25" data-campaign="2">$25</button>
+                        <button class="amount-btn" data-amount="50" data-campaign="2">$50</button>
+                    </div>
+                    
+                    <div class="custom-amount">
+                        <input type="number" id="customAmount2" placeholder="Other amount (USD)" min="1" step="0.01" value="10">
+                    </div>
+                </div>
+                
+                <button class="donate-btn" data-campaign="2" id="donateBtn2">
+                    💎 Chip In to Campaign 2
+                </button>
+            </div>
+            
+            <!-- CAMPAIGN 3 -->
+            <div class="campaign-card" id="campaign3">
+                <h2 class="campaign-title">Campaign 3: Hackathon Prize Pool</h2>
+                <p class="campaign-description">Sponsoring an online hackathon to incentivize developers to build the next generation of tools and dApps on our platform.</p>
+                
+                <div class="progress-section">
+                    <div class="goal-display">
+                        <span class="sol-goal">Goal: <span id="goalSol3">25</span> SOL</span>
+                        <span class="usd-goal">≈ $<span id="goalUsd3">3750</span> USD</span>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progressBar3"></div>
+                    </div>
+                    <div class="raised-info">
+                        Raised: <span id="raisedSol3">0</span> SOL ($<span id="raisedUsd3">0</span> USD)
+                    </div>
+                </div>
+                
+                <div class="amount-section">
+                    <p><strong>Suggested amount (USD):</strong></p>
+                    <div class="suggested-amounts">
+                        <button class="amount-btn" data-amount="10" data-campaign="3">$10</button>
+                        <button class="amount-btn" data-amount="25" data-campaign="3">$25</button>
+                        <button class="amount-btn" data-amount="50" data-campaign="3">$50</button>
+                    </div>
+                    
+                    <div class="custom-amount">
+                        <input type="number" id="customAmount3" placeholder="Other amount (USD)" min="1" step="0.01" value="10">
+                    </div>
+                </div>
+                
+                <button class="donate-btn" data-campaign="3" id="donateBtn3">
+                    💎 Chip In to Campaign 3
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Thank you for supporting Root5DAO! All funds go directly to marketing initiatives.</p>
+        <p>Payments secured by DePay • Need help? Contact us.</p>
+    </footer>
+
+    <!-- ============================================ -->
+    <!-- JAVASCRIPT CONFIGURATION & LOGIC -->
+    <!-- ============================================ -->
+    <script>
+        // ===================== CONFIGURATION =====================
+        // 🔴 REPLACE WITH YOUR ACTUAL VALUES
+        const CONFIG = {
+            // Your DePay Integration ID from dashboard
+            DEPAY_INTEGRATION_ID: '411019b3-e374-45cd-9cb9-20ba0a68035d',
+            
+            // Your wallet addresses (for display purposes)
+            WALLETS: {
+                solana: 'HduyFWJojMpNn6BES6YJTejBs7LLDqfvfrZ353pZCEbu',
+                ethereum: '0x66b2F1de95239DC6C0e825A10f980efEb092E23B'
+            },
+            
+            // Campaign goals IN SOL (edit these numbers)
+            CAMPAIGN_GOALS_SOL: {
+                1: 10,   // Campaign 1: 10 SOL
+                2: 15,   // Campaign 2: 15 SOL
+                3: 25    // Campaign 3: 25 SOL
+            },
+            
+            // Initial raised amounts IN USD (update from your records)
+            // These will be updated via your Pipedream webhook later
+            CAMPAIGN_RAISED_USD: {
+                1: 0,
+                2: 0,
+                3: 0
+            }
+        };
+        
+        // ===================== GLOBAL STATE =====================
+        let SOL_TO_USD = 150; // Will be updated by CoinGecko
+        let activeCampaign = null;
+        
+        // ===================== INITIALIZE PAGE =====================
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. Fetch live SOL price
+            fetchSolPrice();
+            setInterval(fetchSolPrice, 60000); // Update every 60 seconds
+            
+            // 2. Setup campaign buttons and interactions
+            initializeCampaigns();
+            
+            // 3. Initial display update
+            updateAllCampaignDisplays();
+        });
+        
+        // ===================== SOL PRICE FETCH =====================
+        async function fetchSolPrice() {
+            try {
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd');
+                const data = await response.json();
+                if (data.solana && data.solana.usd) {
+                    SOL_TO_USD = data.solana.usd;
+                    document.getElementById('solPrice').textContent = `$${SOL_TO_USD}`;
+                    updateAllCampaignDisplays(); // Refresh USD values
+                }
+            } catch (error) {
+                console.warn('Using fallback SOL price:', error);
+                document.getElementById('solPrice').textContent = `~$${SOL_TO_USD}`;
+            }
+        }
+        
+        // ===================== CAMPAIGN INITIALIZATION =====================
+        function initializeCampaigns() {
+            // Setup suggested amount buttons
+            document.querySelectorAll('.amount-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const campaignId = this.getAttribute('data-campaign');
+                    const amount = this.getAttribute('data-amount');
+                    
+                    // Update custom input
+                    document.getElementById(`customAmount${campaignId}`).value = amount;
+                    
+                    // Visual active state
+                    document.querySelectorAll(`.amount-btn[data-campaign="${campaignId}"]`).forEach(b => {
+                        b.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
+            
+            // Setup donate buttons
+            for (let i = 1; i <= 3; i++) {
+                document.getElementById(`donateBtn${i}`).addEventListener('click', function() {
+                    launchDePayWidget(i);
+                });
+            }
+            
+            // Setup custom input clearing
+            document.querySelectorAll('input[id^="customAmount"]').forEach(input => {
+                input.addEventListener('focus', function() {
+                    const campaignId = this.id.replace('customAmount', '');
+                    document.querySelectorAll(`.amount-btn[data-campaign="${campaignId}"]`).forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                });
+            });
+        }
+        
+        // ===================== DEPAY WIDGET LAUNCHER =====================
+        function launchDePayWidget(campaignId) {
+            const customInput = document.getElementById(`customAmount${campaignId}`);
+            let amount = parseFloat(customInput.value);
+            
+            // Validate amount
+            if (!amount || amount < 1) {
+                alert('Please enter a valid amount (minimum $1)');
+                customInput.focus();
+                return;
+            }
+            
+            // Campaign titles for reference
+            const campaignTitles = {
+                1: 'Community Awareness Blitz',
+                2: 'Content Creator Partnerships',
+                3: 'Hackathon Prize Pool'
+            };
+            
+            // Configure DePay widget
+            const deployConfig = {
+                // 🔴 Your integration ID is critical here
+                integration: CONFIG.DEPAY_INTEGRATION_ID,
+                
+                // Payment details
+                amount: amount,
+                currency: 'USD',
+                
+                // Critical: Pass campaign ID for webhook tracking
+                // DePay will include this in the metadata sent to your webhook
+                metadata: {
+                    campaignId: campaignId.toString(),
+                    project: 'Root5DAO',
+                    campaign: campaignTitles[campaignId]
+                },
+                
+                // UI customization
+                title: `Support Root5DAO: ${campaignTitles[campaignId]}`,
+                description: `Thank you for contributing to our marketing campaign!`,
+                
+                // Blockchain selection - let user choose
+                blockchain: 'any',
+                
+                // Optional: Specify your wallets per blockchain
+                receivers: {
+                    solana: CONFIG.WALLETS.solana,
+                    ethereum: CONFIG.WALLETS.ethereum,
+                    bsc: CONFIG.WALLETS.ethereum  // Same address for BNB Chain
+                },
+                
+                // After payment behavior
+                closeAfterPayment: true
+            };
+            
+            // Launch the widget
+            try {
+                DePayWidgets.Payment(deployConfig);
+            } catch (error) {
+                console.error('Failed to launch DePay widget:', error);
+                alert('Payment system unavailable. Please try again later.');
+            }
+        }
+        
+        // ===================== PROGRESS BAR UPDATES =====================
+        function updateAllCampaignDisplays() {
+            for (let i = 1; i <= 3; i++) {
+                updateCampaignDisplay(i);
+            }
+        }
+        
+        function updateCampaignDisplay(campaignId) {
+            // Get goals
+            const goalSOL = CONFIG.CAMPAIGN_GOALS_SOL[campaignId];
+            const goalUSD = goalSOL * SOL_TO_USD;
+            
+            // Get raised amounts (in USD, convert to SOL)
+            const raisedUSD = CONFIG.CAMPAIGN_RAISED_USD[campaignId] || 0;
+            const raisedSOL = raisedUSD / SOL_TO_USD;
+            
+            // Calculate progress
+            const progressPercent = Math.min((raisedUSD / goalUSD) * 100, 100);
+            
+            // Update progress bar
+            const progressBar = document.getElementById(`progressBar${campaignId}`);
+            if (progressBar) {
+                progressBar.style.width = `${progressPercent}%`;
+                
+                // Color coding
+                if (progressPercent >= 100) {
+                    progressBar.style.background = 'linear-gradient(90deg, #27ae60, #2ecc71)';
+                } else if (progressPercent >= 70) {
+                    progressBar.style.background = 'linear-gradient(90deg, #f39c12, #f1c40f)';
+                }
+            }
+            
+            // Update displayed numbers
+            document.getElementById(`goalSol${campaignId}`).textContent = goalSOL;
+            document.getElementById(`goalUsd${campaignId}`).textContent = goalUSD.toFixed(0);
+            document.getElementById(`raisedSol${campaignId}`).textContent = raisedSOL.toFixed(2);
+            document.getElementById(`raisedUsd${campaignId}`).textContent = raisedUSD.toFixed(2);
+        }
+        
+        // ===================== WEBHOOK INTEGRATION STUB =====================
+        // This function would be called by your Pipedream webhook system
+        // For now, it's a manual function you can call from browser console
+        window.updateCampaignRaised = function(campaignId, amountUSD) {
+            if (CONFIG.CAMPAIGN_RAISED_USD[campaignId] !== undefined) {
+                CONFIG.CAMPAIGN_RAISED_USD[campaignId] += parseFloat(amountUSD);
+                updateCampaignDisplay(campaignId);
+                console.log(`Campaign ${campaignId} updated: +$${amountUSD}`);
+            }
+        };
+        
+        // ===================== MANUAL TESTING =====================
+        // Quick test from browser console: updateCampaignRaised(1, 50)
+        console.log('Root5DAO Chip-In page loaded!');
+        console.log('Test function: updateCampaignRaised(campaignId, amountUSD)');
+        
+    </script>
+</body>
+</html>
